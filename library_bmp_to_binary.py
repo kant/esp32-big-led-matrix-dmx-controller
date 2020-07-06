@@ -1,6 +1,8 @@
 from PIL import Image
 
-#This comment is new!!
+#This comment is new!! and newer!
+
+
 def single_bmp_to_binary(bmp_file_name, bin_file_name):
     print("Converting to Binary Code")
     print("...")
