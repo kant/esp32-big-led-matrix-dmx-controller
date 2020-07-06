@@ -3,10 +3,11 @@ from library_bmp_to_binary import multiple_bmp_to_multiple_binary
 
 def main():
     print("Welcome to the Multiple BMP Frames to Multiple Binary Frames Converter!")
+    path = input("In witch folder are the Bitmaps? standard:'BMP' or 'OUTPUT_FRAMES'")
     frames = int(input("How many frames do you have in the Folder?"))
     #Start process:
 
-    multiple_bmp_to_multiple_binary(frames)
+    multiple_bmp_to_multiple_binary(frames, path)
 
     # Print Done
     print("\n")

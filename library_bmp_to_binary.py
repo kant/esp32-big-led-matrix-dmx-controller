@@ -23,14 +23,14 @@ def single_bmp_to_binary(bmp_file_name, bin_file_name):
     print("Done converting to Binary File.")
 
 
-def multiple_bmp_to_multiple_binary(count_frames):
+def multiple_bmp_to_multiple_binary(count_frames, path):
     print("Your BMPs need to be in BMP folder. Their should be named: 'frame1', 'frame2', ...")
     input("[Press enter to Start Converting]")
     print("Converting to Binary Code Frames")
     print("...")
     count = 1
     while True:
-        im = Image.open("BMP\\" + "frame" + str(count) + ".bmp")
+        im = Image.open(path + "\\frame" + str(count) + ".bmp")
         bin_file = open("frame" + str(count) + ".bmp", 'w+b')
         led_number = 0
         matrix_height = im.size[1]
