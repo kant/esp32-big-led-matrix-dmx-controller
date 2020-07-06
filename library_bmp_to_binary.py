@@ -1,4 +1,7 @@
 from PIL import Image
+import cv2
+import os
+import shutil
 
 
 def single_bmp_to_binary(bmp_file_name, bin_file_name):
@@ -21,7 +24,7 @@ def single_bmp_to_binary(bmp_file_name, bin_file_name):
 
 
 def multiple_bmp_to_multiple_binary(count_frames):
-    print("Your BMPs need to be named: 'frame1', 'frame2', ...")
+    print("Your BMPs need to be in BMP folder. Their should be named: 'frame1', 'frame2', ...")
     input("[Press enter to Start Converting]")
     print("Converting to Binary Code Frames")
     print("...")
@@ -46,6 +49,43 @@ def multiple_bmp_to_multiple_binary(count_frames):
             break
 
     print("Done converting to Binary Frames.")
+
+
+def video_to_frames(video_file_name):
+    isFile1 = os.path.isdir("OUTPUT_FRAMES_TEMP")  # Check for Temp Folder
+    if not isFile1:
+        os.mkdir("OUTPUT_FRAMES_TEMP")  # Create Temp Folder for full sized frames
+    vidcap = cv2.VideoCapture(video_file_name)
+    video_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT)) - 1
+    print("Extracting Frames...")
+    count = 0
+    while True:
+        success, image = vidcap.read()  # Read the Video Frame
+        cv2.imwrite("OUTPUT_FRAMES_TEMP" + "\\full_size_frame" + str(count) + ".jpg", image)  # Save the Frame
+        count = count + 1
+        if count > (video_length-1):
+            vidcap.release()  # Relase the Video / End
+            print("Done extracting Frames.\n%d frames extracted" % count)
+            break
+
+
+def frames_to_bmp(video_file_name, matrix_width, matrix_height):
+    vidcap = cv2.VideoCapture(video_file_name) # Gets Video
+    video_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT)) - 1  # Gets Video Length
+    print("Converting Frames to BMPs...")
+    count = 0
+    while True:
+        im = Image.open("OUTPUT_FRAMES_TEMP" + "\\full_size_frame" + str(count) + ".jpg")  # Read a full size Image
+        im_resized = im.resize((int(matrix_width), int(matrix_height)), resample=3, box=None)  # Convert
+        im_resized.save("OUTPUT_FRAMES" + "\\frame" + str(count) + ".bmp")  # Save Bitmap
+        count = count + 1
+        if count > (video_length-1):
+            vidcap.release()  # Release the Video / End
+            shutil.rmtree("OUTPUT_FRAMES_TEMP")  # Delete Temporary Frames Folder
+            print("Done converting Frames.\n%d frames converted." % count)
+            print("\n")
+            break
+
 
 
 def print_pixel(bin_file, im, led_number, x, y):

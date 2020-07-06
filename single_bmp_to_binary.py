@@ -2,7 +2,7 @@ from library_bmp_to_binary import single_bmp_to_binary
 
 
 def main():
-    print("Welcome to the Converter. Put your BMP FIle in this folder.")
+    print("Welcome to the Converter. Put your BMP FIle in the BMP folder.")
     file_name = input("Whats the name of your bmp file?('yourfile.bmp')")
     bin_name = input("What should be the output name of the bin File?('yourfile.bin')")
 

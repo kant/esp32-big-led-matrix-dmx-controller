@@ -8,7 +8,9 @@ def main():
 
     multiple_bmp_to_multiple_binary(frames)
 
-
+    # Print Done
+    print("\n")
+    print("The Job is Done. Thank you for using the converter.")
     print("Thank you for using the Converter!")
     print("Credits: ")
     print("Phil Meyer, 2020")
