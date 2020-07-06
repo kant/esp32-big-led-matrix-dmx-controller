@@ -5,3 +5,5 @@ The library_bmp_to_binary file is the main library that you need to import.
 After taht you can use the functions from the file. -  multiple_bmp_to_multiple_binary
                                                     -  bmp_to_binary
 
+test
+
