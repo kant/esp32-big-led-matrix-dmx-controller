@@ -23,11 +23,17 @@ ESPWROOM 32: 512KBytes of sRAM
 
 Reference: Arduino DUE (96KByte) more than 1000LEDS at 30fps
 
---> ESPWROOM 32 : 5000LEDS
+--> ESPWROOM 32 : calculation: 5000LEDS?!
 
-more then 1024 LEDS at 800 kHz --> Framerate Drop under 30FPS
 
 --> You can calculate all this
+
+Parallel Output:
+
+esp can write ou 24 leds worth of data at the same time --> 13.000 LEDS  (Quote: FastLED owner)
+
+
+
 
 LEDs:
 
