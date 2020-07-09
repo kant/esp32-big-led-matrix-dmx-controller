@@ -12,10 +12,42 @@ Things: - the amount of Ram of the ESP32
 
 Ideas:
 SRAM usage:
-- each LED uses 3bytes of your SRAM
+- each LED uses 3bytes of your SRAM   | 3000 bytes of memory for the RGB data for 1000 leds (3 bytes of data for each led)
 - The sRAM is also used of DMX and Network.
+
+--> Laut meiner rechnung: 1.777.777 LEDs
 
 ESPWROOM 32: 512KBytes of sRAM
    --> Esp supports 4x 16mBytes of external QSPI flash and SRAM
 
 
+Reference: Arduino DUE (96KByte) more than 1000LEDS at 30fps
+
+--> ESPWROOM 32 : 5000LEDS
+
+more then 1024 LEDS at 800 kHz --> Framerate Drop under 30FPS
+
+--> You can calculate all this
+
+LEDs:
+
+takes about 30micro Seconds to write a single LED
+
+takes 1.25µs per byte of data written , each LED has 24bti of Data --> 30micro Seconds
+
+????? 8Way Parallel output?! up to 260000 ?!
+
+no maximum length, because each LED re-generates the signal  --> Dont have to worry about Signal Voltage Drops
+
+
+Calculation:
+
+
+
+
+
+
+
+Links:
+https://github.com/FastLED/FastLED/issues/288
+https://github.com/FastLED/FastLED/wiki/Frequently-Asked-Questions#7-how-many-leds-can-i-drive

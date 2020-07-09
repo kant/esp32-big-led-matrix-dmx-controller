@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a6b9c9e1-94d8-427e-9346-bbb58e3d6375" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/philm.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Matrix_Emulator/problems.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Matrix_Emulator/config_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/Matrix_Emulator/config_reader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Matrix_Emulator/problems.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Matrix_Emulator/problems.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +151,7 @@
       <updated>1593996113699</updated>
       <workItem from="1593996119459" duration="6496000" />
       <workItem from="1594310991382" duration="20000" />
-      <workItem from="1594311058905" duration="2657000" />
+      <workItem from="1594311058905" duration="3585000" />
     </task>
     <task id="LOCAL-00001" summary="configfile added">
       <created>1594311949091</created>
@@ -183,7 +181,14 @@
       <option name="project" value="LOCAL" />
       <updated>1594312742205</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="configfile added">
+      <created>1594313798243</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1594313798243</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -208,10 +213,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312695393" />
-    <state x="585" y="85" key="CommitChangelistDialog2" timestamp="1594312741353">
+    <state x="585" y="85" key="CommitChangelistDialog2" timestamp="1594313797397">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="585" y="85" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312741353" />
+    <state x="585" y="85" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594313797397" />
     <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1594312694390">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
