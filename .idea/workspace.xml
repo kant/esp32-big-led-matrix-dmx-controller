@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a6b9c9e1-94d8-427e-9346-bbb58e3d6375" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Matrix_Emulator/config_reader.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/philm.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Matrix_Emulator/problems.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.ini" beforeDir="false" afterPath="$PROJECT_DIR$/config.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/config_creator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Matrix_Emulator/config_reader.py" beforeDir="false" afterPath="$PROJECT_DIR$/Matrix_Emulator/config_reader.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,8 +40,10 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/config_creator.py" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunManager" selected="Python.config_reader">
     <configuration name="config_creator" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
@@ -151,7 +153,7 @@
       <updated>1593996113699</updated>
       <workItem from="1593996119459" duration="6496000" />
       <workItem from="1594310991382" duration="20000" />
-      <workItem from="1594311058905" duration="1636000" />
+      <workItem from="1594311058905" duration="2657000" />
     </task>
     <task id="LOCAL-00001" summary="configfile added">
       <created>1594311949091</created>
@@ -167,7 +169,21 @@
       <option name="project" value="LOCAL" />
       <updated>1594312024511</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="configfile added">
+      <created>1594312734590</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1594312734590</updated>
+    </task>
+    <task id="LOCAL-00004" summary="configfile added">
+      <created>1594312742205</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1594312742205</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -192,10 +208,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312695393" />
-    <state x="585" y="85" key="CommitChangelistDialog2" timestamp="1594312023492">
+    <state x="585" y="85" key="CommitChangelistDialog2" timestamp="1594312741353">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="585" y="85" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312023492" />
+    <state x="585" y="85" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312741353" />
     <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1594312694390">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -204,22 +220,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="667" y="387" key="Github.CreatePullRequestDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1593996570267" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1594312678745">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1594312990834">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312678745" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1594312678745">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312990834" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1594312990834">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312678745" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1594312678745">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312990834" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1594312990833">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312678745" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1594312678745">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312990833" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1594312990834">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312678745" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312990834" />
+    <state x="461" y="165" key="SettingsEditor" timestamp="1594313393537">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="165" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594313393537" />
     <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1593996682788">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -230,7 +250,7 @@
     <state x="769" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594312556042" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/github$single_bmp_to_binary.coverage" NAME="config_reader Coverage Results" MODIFIED="1594312715852" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Matrix_Emulator" />
+    <SUITE FILE_PATH="coverage/github$single_bmp_to_binary.coverage" NAME="config_reader Coverage Results" MODIFIED="1594312990826" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Matrix_Emulator" />
     <SUITE FILE_PATH="coverage/github$video_to_multiple_bmp.coverage" NAME="video_to_multiple_bmp Coverage Results" MODIFIED="1594030584124" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/github$multiple_bmp_to_multiple_binary.coverage" NAME="multiple_bmp_to_multiple_binary Coverage Results" MODIFIED="1594044451512" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/github$config_creator.coverage" NAME="config_creator Coverage Results" MODIFIED="1594312696465" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
