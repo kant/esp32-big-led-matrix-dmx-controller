@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a6b9c9e1-94d8-427e-9346-bbb58e3d6375" name="Default Changelist" comment="configfile added">
-      <change afterPath="$PROJECT_DIR$/multiple_bmp_to_single_binary.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BMP/frame0.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/BMP/frame0.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BMP/frame1.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/BMP/frame1.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BMP/frame2.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/BMP/frame2.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BMP/frame3.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/BMP/frame3.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BMP/frame4.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/BMP/frame4.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BMP/frame5.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/BMP/frame5.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BMP/frame6.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/BMP/frame6.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BMP/frame7.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/BMP/frame7.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BMP/frame8.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/BMP/frame8.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BMP/frame9.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/BMP/frame9.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/big_binary_creator.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/library_bmp_to_binary.py" beforeDir="false" afterPath="$PROJECT_DIR$/library_bmp_to_binary.py" afterDir="false" />
-    </list>
+    <list default="true" id="a6b9c9e1-94d8-427e-9346-bbb58e3d6375" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -214,7 +199,7 @@
       <updated>1593996113699</updated>
       <workItem from="1593996119459" duration="6496000" />
       <workItem from="1594310991382" duration="20000" />
-      <workItem from="1594311058905" duration="10197000" />
+      <workItem from="1594311058905" duration="10268000" />
     </task>
     <task id="LOCAL-00001" summary="configfile added">
       <created>1594311949091</created>
@@ -272,7 +257,14 @@
       <option name="project" value="LOCAL" />
       <updated>1594332347343</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="new Binary FIle creator added">
+      <created>1594383063195</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1594383063195</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -290,17 +282,18 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="configfile added" />
-    <option name="LAST_COMMIT_MESSAGE" value="configfile added" />
+    <MESSAGE value="new Binary FIle creator added" />
+    <option name="LAST_COMMIT_MESSAGE" value="new Binary FIle creator added" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1594381857851">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594381857851" />
-    <state x="585" y="85" key="CommitChangelistDialog2" timestamp="1594378677605">
+    <state x="585" y="85" key="CommitChangelistDialog2" timestamp="1594383062012">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="585" y="85" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594378677605" />
+    <state x="585" y="85" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594383062012" />
     <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1594381856705">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -309,22 +302,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="667" y="387" key="Github.CreatePullRequestDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1593996570267" />
-    <state width="1877" height="345" key="GridCell.Tab.0.bottom" timestamp="1594382942142">
+    <state width="1877" height="345" key="GridCell.Tab.0.bottom" timestamp="1594383004961">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="345" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594382942142" />
-    <state width="1877" height="345" key="GridCell.Tab.0.center" timestamp="1594382942142">
+    <state width="1877" height="345" key="GridCell.Tab.0.bottom/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594383004961" />
+    <state width="1877" height="345" key="GridCell.Tab.0.center" timestamp="1594383004960">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="345" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594382942142" />
-    <state width="1877" height="345" key="GridCell.Tab.0.left" timestamp="1594382942142">
+    <state width="1877" height="345" key="GridCell.Tab.0.center/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594383004960" />
+    <state width="1877" height="345" key="GridCell.Tab.0.left" timestamp="1594383004960">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="345" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594382942142" />
-    <state width="1877" height="345" key="GridCell.Tab.0.right" timestamp="1594382942142">
+    <state width="1877" height="345" key="GridCell.Tab.0.left/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594383004960" />
+    <state width="1877" height="345" key="GridCell.Tab.0.right" timestamp="1594383004960">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="345" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594382942142" />
+    <state width="1877" height="345" key="GridCell.Tab.0.right/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1594383004960" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1594380087153">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
