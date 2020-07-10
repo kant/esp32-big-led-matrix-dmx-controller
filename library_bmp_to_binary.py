@@ -31,7 +31,7 @@ def multiple_bmp_to_multiple_binary(count_frames, path):
     count = 1
     while True:
         im = Image.open(path + "\\frame" + str(count) + ".bmp")
-        bin_file = open("frame" + str(count) + ".bmp", 'w+b')
+        bin_file = open("frame" + str(count) + ".bin", 'w+b')
         led_number = 0
         matrix_height = im.size[1]
         y = matrix_height - 1
@@ -49,6 +49,38 @@ def multiple_bmp_to_multiple_binary(count_frames, path):
             break
 
     print("Done converting to Binary Frames.")
+
+
+def multiple_bmp_to_single_binary(frames_count, path, led_count):
+    bin_file = open("animation.bin", 'w+b')
+    frames = [0, 0, 0, 10]
+    binary = bytearray(frames)
+    bin_file.write(binary)
+    leds = [0, 0, 0, 49]
+    binary = bytearray(leds)
+    bin_file.write(binary)
+
+    count = 0
+    while True:
+        im = Image.open(path + "\\frame" + str(count) + ".bmp")
+        led_number = 0
+        matrix_height = im.size[1]
+        y = matrix_height - 1
+        while y >= 0:
+            led_number = iterate_line_from_right_to_left(bin_file, im, led_number, y)
+            y = y - 1
+            if y >= 0:
+                led_number = iterate_line_from_left_to_right(bin_file, im, led_number, y)
+                y = y - 1
+
+
+        count = count + 1
+        if int(count) > (int(frames_count) - 1):
+            break
+
+    bin_file.close()
+    print("Done converting to Binary Frames.")
+
 
 
 def video_to_frames(video_file_name):
