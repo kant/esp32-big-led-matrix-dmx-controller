@@ -83,6 +83,7 @@ def multiple_bmp_to_single_binary(frames_count, path, led_count):
 
 
 
+
 def video_to_frames(video_file_name):
     isFile1 = os.path.isdir("OUTPUT_FRAMES_TEMP")  # Check for Temp Folder
     if not isFile1:
