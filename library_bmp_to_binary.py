@@ -13,10 +13,10 @@ def single_bmp_to_binary(bmp_file_name, bin_file_name):
     matrix_height = im.size[1]
     y = matrix_height - 1
     while y >= 0:
-        led_number = iterate_line_from_right_to_left(bin_file, im, led_number, y)
+        led_number = iterate_line_from_left_to_right(bin_file, im, led_number, y)
         y = y - 1
         if y >= 0:
-            led_number = iterate_line_from_left_to_right(bin_file, im, led_number, y)
+            led_number = iterate_line_from_right_to_left(bin_file, im, led_number, y)
             y = y - 1
 
     bin_file.close()
