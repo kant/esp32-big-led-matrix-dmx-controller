@@ -57,3 +57,28 @@ Calculation:
 Links:
 https://github.com/FastLED/FastLED/issues/288
 https://github.com/FastLED/FastLED/wiki/Frequently-Asked-Questions#7-how-many-leds-can-i-drive
+
+
+========================================================================================================================
+RASPBERRY PI
+
+__________________
+
+Because the raspberry pi runs multi-tasking Linux operating system it doesn't have real-time controll over
+its GPIO pins and can't easily drive neoPixels.
+Typically a small microcontroller like a Trinket or Teensy can be used to communicate with the Raspberyy Pi
+and generate the NeoPixel data signal.
+
+--> You can control the LEDs only with DMA .. --> Adafruit library can do this for you.
+
+Adafruit CircuitPython NeoPixel Library solves the real-time control problem by using PWM and DMA hardware on the
+Raspberry PI. The DMA can transfer bytes of memory between parts of the processor without using the CPU.
+By using DMA to send a specific sequence of bytes to tte PWM Module, the NeoPixel data Signal can be generated
+without being interrupted by the Raspberry PIs operating System.
+
+
+????  Only works with GPIO10, GPIO12, GPIO18 or GPIO21  ???   -->  board.D18
+
+
+
+https://cdn-learn.adafruit.com/downloads/pdf/adafruit-neopixel-uberguide.pdf
