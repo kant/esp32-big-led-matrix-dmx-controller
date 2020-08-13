@@ -1,5 +1,6 @@
 from PIL import Image
 import cv2
+import numpy as np
 import os
 import shutil
 import socket
@@ -288,6 +289,20 @@ def lt3_video(video_file_name):
             break
 
 
+def create_frame_with_text(background_color, text, scale, color, thickness, x, y, frame_filename="frame0.bmp"):
+    width = 50
+    height = 28
+    im = np.zeros((height, width, 3), np.uint8)
+    im[:] = turn_color_from_rgb_to_bgr(background_color)
+
+    position = (x, y)  # Text position
+    font = cv2.FONT_HERSHEY_SIMPLEX  # Font of the text
+
+    cv2.putText(im, text, position, font, scale, turn_color_from_rgb_to_bgr(color), thickness, cv2.LINE_4)
+
+    return im
+
+
 def send_to_esp(opened_socket, package1, package2, package3, package4):
     opened_socket.sendto(package1, ("ESP-158", 50000))  # Send data to P1
     opened_socket.sendto(package2, ("192.168.2.160", 50000))  # Send data to P2
@@ -402,6 +417,12 @@ def iterate_line_from_right_to_left(bin_file, im, led_number, y):
         print_pixel(bin_file, im, led_number, x, y)
         led_number = led_number + 1
     return led_number
+
+
+def turn_color_from_rgb_to_bgr(color_rgb):
+    # Turn color values
+    color = [color_rgb[2], color_rgb[1], color_rgb[0]]
+    return color
 
 
 def wait_for_keyboard_input():
