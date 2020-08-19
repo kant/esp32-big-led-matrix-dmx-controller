@@ -47,6 +47,8 @@ def main():
     master_time_packet = build_master_time_packet(master_time_ms)
     opened_socket.sendto(master_time_packet, ("<broadcast>", 50000))
 
+    last_send_time_packet_time = master_time_ms
+
     last_send_frame_packet_time = master_time_ms
     frame_packet_has_been_sent = False
 
@@ -83,7 +85,10 @@ def main():
         if frame_packet_has_been_sent:
             # wait until approx. 40 ms elapsed from last packet has been sent
             wait_time_ms = 40.0 - (get_current_time_ms() - last_send_frame_packet_time)
-            sleep(wait_time_ms / 1000.0)
+            if wait_time_ms > 0:
+                sleep(wait_time_ms / 1000.0)
+
+        master_time_ms = get_current_time_ms()
 
         opened_socket.sendto(frame_packet, ("192.168.2.162", 50000))
         opened_socket.sendto(frame_packet, ("192.168.2.164", 50000))
@@ -91,9 +96,8 @@ def main():
         opened_socket.sendto(frame_packet, ("192.168.2.166", 50000))
 
         frame_packet_has_been_sent = True
-        last_send_frame_packet_time = get_current_time_ms()
-
         time_to_present_frame = last_send_frame_packet_time + time_offset + 40
+        last_send_frame_packet_time = master_time_ms
 
         if (last_send_frame_packet_time - last_send_time_packet_time) > 2000:
             # send updated master time every approx. 2000ms
