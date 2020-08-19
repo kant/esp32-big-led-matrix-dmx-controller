@@ -47,8 +47,6 @@ def main():
     master_time_packet = build_master_time_packet(master_time_ms)
     opened_socket.sendto(master_time_packet, ("<broadcast>", 50000))
 
-    last_send_time_packet_time = master_time_ms
-
     last_send_frame_packet_time = master_time_ms
     frame_packet_has_been_sent = False
 
