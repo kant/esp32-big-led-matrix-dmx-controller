@@ -1,9 +1,10 @@
 import typing
+import threading as th
 import os
 import sys
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, QFile, QUrl, QFileInfo, QRunnable, QThreadPool, pyqtSlot
 from PyQt5.QtGui import QPixmap, QTextCursor, QColor
-from PyQt5.QtWidgets import QMainWindow, QLabel, QApplication, QWidget, QColorDialog, QInputDialog
+from PyQt5.QtWidgets import QMainWindow, QLabel, QApplication, QFileDialog
 from PyQt5 import uic, QtCore, QtGui
 import cv2
 from PyQt5 import QtWidgets
@@ -11,95 +12,48 @@ from PyQt5 import Qt
 from library_bmp_to_binary import *
 
 
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        uic.loadUi("D:\\Projekte\\led-matrix-qt-gui\\form.ui", self)
+        uic.loadUi("D:\\Projekte\\led-matrix-qt-gui\\main_gui.ui", self)
+
+        # Creating the Thread pool
+        self.threadpool = QThreadPool()
+        print("Multitasking with maximum %d threads" % self.threadpool.maxThreadCount())
+
         # POINTERS TO ELEMENTS IN THE UI FILE
         # Pointer to buttons
-        self.updateButton = self.findChild(QtWidgets.QPushButton, 'updateButton')  # Find the button
-        self.updateButton.clicked.connect(self.update_button_pressed)
-        self.saveButton = self.findChild(QtWidgets.QPushButton, 'saveButton')  # Find the button
-        self.saveButton.clicked.connect(self.save)
-        self.discardButton = self.findChild(QtWidgets.QPushButton, 'discardButton')  # Find the button
-        self.discardButton.clicked.connect(self.discard)
+        self.openButton = self.findChild(QtWidgets.QPushButton, 'openVideo')  # Find the button
+        self.openButton.clicked.connect(self.open_button_pressed)
+        self.showButton = self.findChild(QtWidgets.QPushButton, 'showVideo')  # Find the button
+        self.showButton.clicked.connect(self.show_button_pressed)
+        self.stopButton = self.findChild(QtWidgets.QPushButton, 'stopVideo')  # Find the button
+        self.stopButton.clicked.connect(self.stop_button_pressed)
 
-        self.backgroundColorPicker = self.findChild(QtWidgets.QPushButton, 'backgroundColorPicker')  # Find the button
-        self.backgroundColorPicker.clicked.connect(self.background_color_picker)
-        self.textColorPicker = self.findChild(QtWidgets.QPushButton, 'textColorPicker')  # Find the button
-        self.textColorPicker.clicked.connect(self.text_color_picker)
+        self.filename_label = self.findChild(QtWidgets.QLabel, 'filename')  # Find the "filename" label
 
-        # Pointer to Inputs
-        self.inputText = self.findChild(QtWidgets.QLineEdit, 'inputText')  # Find the input field
-        self.inputScale = self.findChild(QtWidgets.QLineEdit, 'inputScale')  # Find the input field
-        self.inputTextThickness = self.findChild(QtWidgets.QLineEdit, 'inputTextThickness')  # Find the input field
-        self.inputX = self.findChild(QtWidgets.QLineEdit, 'inputX')         # Find the input field
-        self.inputY = self.findChild(QtWidgets.QLineEdit, 'inputY')  # Find the input field
-        # Pointer to Image Label
-        self.image_frame = self.findChild(QtWidgets.QLabel, 'image_frame')  # Find the image frame label
+        self.file_path = ""
 
-        # Initiation of the important parameters for the image creation
-        self.background_color = [0, 0, 0]
-        self.text = self.inputText.text()
-        self.scale = self.inputScale.text()
-        self.text_color = [255, 255, 255]
-        self.text_thickness = self.inputTextThickness.text()
-        self.x_coordinate = self.inputX.text()
-        self.y_coordinate = self.inputY.text()
+    def open_button_pressed(self):
+        print("Open")
+        self.file_path, _ = QFileDialog.getOpenFileName(self, 'Open file', "Files")
+        print(self.file_path)
+        url = QUrl.fromLocalFile(self.file_path)
+        self.filename_label.setText(url.fileName())
+
+    def show_button_pressed(self):
+        video_file_name = self.file_path
+        th.Thread(target=lt1_video(video_file_name), args=(), name='video', daemon=True).start()
+        # show_black()
 
 
-    def update_button_pressed(self):
-        # Create Picture
-        cv_img = create_frame_with_text(self.background_color, self.inputText.text(), float(self.inputScale.text()),
-                                        self.text_color, int(self.inputTextThickness.text()),
-                                        int(self.inputX.text()), int(self.inputY.text()))
-        # print(self.inputText.text())
-
-        qt_img = self.convert_cv_qt(cv_img)
-        self.image_frame.setPixmap(qt_img)
-
-    def background_color_picker(self):
-        q_background_color = QtWidgets.QColorDialog.getColor()
-        rgb = q_background_color.name()
-        h = rgb.lstrip('#')
-        new_rgb = tuple(int(h[i:i+2], 16) for i in (0, 2, 3))
-        # print(new_rgb)
-        self.background_color = list(new_rgb)
-
-    def text_color_picker(self):
-        q_text_color = QtWidgets.QColorDialog.getColor()
-        rgb = q_text_color.name()
-        h = rgb.lstrip('#')
-        new_rgb = tuple(int(h[i:i+2], 16) for i in (0, 2, 3))
-        # print(new_rgb)
-        self.text_color = list(new_rgb)
-
-
-    def convert_cv_qt(self, cv_img):
-        rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
-        h, w, ch = rgb_image.shape
-        bytes_per_line = ch * w
-        convert_to_Qt_format = QtGui.QImage(rgb_image.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888)
-        p = convert_to_Qt_format.scaled(500, 281)
-        return QPixmap.fromImage(p)
-
-    def save(self):
-        text, ok = QInputDialog.getText(self, "Bild Speichern", "Bitte gewünschten Dateinamen eingeben")
-        if ok:
-            img = create_frame_with_text(self.background_color, self.inputText.text(), float(self.inputScale.text()),
-                                            self.text_color, int(self.inputTextThickness.text()),
-                                            int(self.inputX.text()), int(self.inputY.text()))
-
-            cv2.imwrite(text + '.bmp', img)
-            self.close()
-
-
-    def discard(self):
-        self.close()
+    def stop_button_pressed(self):
+        stop_function()
 
 
 app = QApplication(sys.argv)
 window = MainWindow()
 window.show()
 app.exec_()
+
+

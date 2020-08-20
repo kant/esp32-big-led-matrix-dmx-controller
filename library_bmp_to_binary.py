@@ -10,92 +10,102 @@ from time import sleep
 import keyboard
 
 
-def single_bmp_to_binary(bmp_file_name, bin_file_name):
-    print("Converting to Binary Code")
-    print("...")
-    im = Image.open("BMP\\" + bmp_file_name)
-    bin_file = open(bin_file_name, 'w+b')
-    led_number = 0
-    matrix_height = im.size[1]
-    y = matrix_height - 1
-    while y >= 0:
-        led_number = iterate_line_from_left_to_right(bin_file, im, led_number, y)
-        y = y - 1
-        if y >= 0:
-            led_number = iterate_line_from_right_to_left(bin_file, im, led_number, y)
-            y = y - 1
-
-    bin_file.close()
-    print("Done converting to Binary File.")
+stop = False
 
 
-def multiple_bmp_to_multiple_binary(count_frames, path):
-    print("Your BMPs need to be in BMP folder. Their should be named: 'frame1', 'frame2', ...")
-    input("[Press enter to Start Converting]")
-    print("Converting to Binary Code Frames")
-    print("...")
-    count = 1
-    while True:
-        im = Image.open(path + "\\frame" + str(count) + ".bmp")
-        bin_file = open("frame" + str(count) + ".bin", 'w+b')
-        led_number = 0
-        matrix_height = im.size[1]
-        y = matrix_height - 1
-        while y >= 0:
-            led_number = iterate_line_from_right_to_left(bin_file, im, led_number, y)
-            y = y - 1
-            if y >= 0:
-                led_number = iterate_line_from_left_to_right(bin_file, im, led_number, y)
-                y = y - 1
+# def single_bmp_to_binary(bmp_file_name, bin_file_name):
+#     print("Converting to Binary Code")
+#     print("...")
+#     im = Image.open("BMP\\" + bmp_file_name)
+#     bin_file = open(bin_file_name, 'w+b')
+#     led_number = 0
+#     matrix_height = im.size[1]
+#     y = matrix_height - 1
+#     while y >= 0:
+#         led_number = iterate_line_from_left_to_right(bin_file, im, led_number, y)
+#         y = y - 1
+#         if y >= 0:
+#             led_number = iterate_line_from_right_to_left(bin_file, im, led_number, y)
+#             y = y - 1
+#
+#     bin_file.close()
+#     print("Done converting to Binary File.")
+#
+#
+# def multiple_bmp_to_multiple_binary(count_frames, path):
+#     print("Your BMPs need to be in BMP folder. Their should be named: 'frame1', 'frame2', ...")
+#     input("[Press enter to Start Converting]")
+#     print("Converting to Binary Code Frames")
+#     print("...")
+#     count = 1
+#     while True:
+#         im = Image.open(path + "\\frame" + str(count) + ".bmp")
+#         bin_file = open("frame" + str(count) + ".bin", 'w+b')
+#         led_number = 0
+#         matrix_height = im.size[1]
+#         y = matrix_height - 1
+#         while y >= 0:
+#             led_number = iterate_line_from_right_to_left(bin_file, im, led_number, y)
+#             y = y - 1
+#             if y >= 0:
+#                 led_number = iterate_line_from_left_to_right(bin_file, im, led_number, y)
+#                 y = y - 1
+#
+#         bin_file.close()
+#
+#         count = count + 1
+#         if int(count) > (int(count_frames) - 1):
+#             break
+#
+#     print("Done converting to Binary Frames.")
+#
+#
+# def multiple_bmp_to_single_binary(frames_count, path, led_count):
+#     bin_file = open("animation.bin", 'w+b')
+#     frames = [0, 0, 0, 10]
+#     binary = bytearray(frames)
+#     bin_file.write(binary)
+#     leds = [0, 0, 0, 49]
+#     binary = bytearray(leds)
+#     bin_file.write(binary)
+#
+#     count = 0
+#     while True:
+#         im = Image.open(path + "\\frame" + str(count) + ".bmp")
+#         led_number = 0
+#         matrix_height = im.size[1]
+#         y = matrix_height - 1
+#         while y >= 0:
+#             led_number = iterate_line_from_right_to_left(bin_file, im, led_number, y)
+#             y = y - 1
+#             if y >= 0:
+#                 led_number = iterate_line_from_left_to_right(bin_file, im, led_number, y)
+#                 y = y - 1
+#
+#
+#         count = count + 1
+#         if int(count) > (int(frames_count) - 1):
+#             break
+#
+#     bin_file.close()
+#     print("Done converting to Binary Frames.")
 
-        bin_file.close()
 
-        count = count + 1
-        if int(count) > (int(count_frames) - 1):
-            break
-
-    print("Done converting to Binary Frames.")
+def get_current_time_ms():
+    return time.time() * 1000
 
 
-def multiple_bmp_to_single_binary(frames_count, path, led_count):
-    bin_file = open("animation.bin", 'w+b')
-    frames = [0, 0, 0, 10]
-    binary = bytearray(frames)
-    bin_file.write(binary)
-    leds = [0, 0, 0, 49]
-    binary = bytearray(leds)
-    bin_file.write(binary)
-
-    count = 0
-    while True:
-        im = Image.open(path + "\\frame" + str(count) + ".bmp")
-        led_number = 0
-        matrix_height = im.size[1]
-        y = matrix_height - 1
-        while y >= 0:
-            led_number = iterate_line_from_right_to_left(bin_file, im, led_number, y)
-            y = y - 1
-            if y >= 0:
-                led_number = iterate_line_from_left_to_right(bin_file, im, led_number, y)
-                y = y - 1
-
-
-        count = count + 1
-        if int(count) > (int(frames_count) - 1):
-            break
-
-    bin_file.close()
-    print("Done converting to Binary Frames.")
-
-
-def get_current_ntp_time_ms():
-    current_unix_time_s = time.time()
-    current_ntp_time_s = current_unix_time_s + 2208988800
-    current_ntp_time_ms = current_ntp_time_s * 1000
-    return current_ntp_time_ms
+def build_master_time_packet(master_time_ms):
+    master_time_packet = bytearray()
+    # 8 bytes represent the master time
+    # round time (float), pack it with little-Endian as unsigned long long (uint64_t in C/C++)
+    master_time_packet += struct.pack('<Q', round(master_time_ms))
+    return master_time_packet
 
 
 def lt1_video(video_file_name):
+    global stop
+    stop = False
     # Setup all that video stuff
     vidcap = cv2.VideoCapture(video_file_name)  # Open the Video
     video_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT)) - 1  # Get Video length
@@ -103,14 +113,25 @@ def lt1_video(video_file_name):
 
     # Setup all that time stuff
     print("sending frame sequence to ESPs")
-    opened_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    opened_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    opened_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
+    opened_socket.settimeout(5)
 
-    last_send_frame_packet_time = get_current_ntp_time_ms()
+    master_time_ms = get_current_time_ms()
+    print("send master time ({0} ms) broadcast".format(master_time_ms))
+    master_time_packet = build_master_time_packet(master_time_ms)
+    opened_socket.sendto(master_time_packet, ("<broadcast>", 50000))
+
+    last_send_time_packet_time = master_time_ms
+
+    last_send_frame_packet_time = master_time_ms
     frame_packet_has_been_sent = False
-    time_offset = 200
-    time_to_present_frame = last_send_frame_packet_time + time_offset
 
-    print("  present first frame at NTP time (in ms) {0}".format(time_to_present_frame))
+    time_offset = 200
+
+    time_to_present_frame = master_time_ms + time_offset
+    print("send first frame presented at time ({0} ms) broadcast".format(time_to_present_frame))
+
 
     while True:
         p1 = bytearray()  # Create / Clear byte arrays
@@ -136,22 +157,30 @@ def lt1_video(video_file_name):
         # WAITING FOR PERMISSION TO LIFT OF
         if frame_packet_has_been_sent:
             # wait until approx. 40 ms elapsed from last packet has been sent
-            wait_time_ms = 40.0 - (get_current_ntp_time_ms() - last_send_frame_packet_time)
+            wait_time_ms = 40.0 - (get_current_time_ms() - last_send_frame_packet_time)
             if wait_time_ms > 0:
                 sleep(wait_time_ms / 1000.0)
+
+        master_time_ms = get_current_time_ms()
 
         # SEND
         send_to_esp(opened_socket, p1, p2, p3, p4)
 
         # Set time values
         frame_packet_has_been_sent = True
-        last_send_frame_packet_time = get_current_ntp_time_ms()
         time_to_present_frame = last_send_frame_packet_time + time_offset + 40
+        last_send_frame_packet_time = master_time_ms
+
+        if (last_send_frame_packet_time - last_send_time_packet_time) > 2000:
+            # send updated master time every approx. 2000ms
+            last_send_time_packet_time = last_send_frame_packet_time
+            master_time_packet = build_master_time_packet(last_send_time_packet_time)
+            opened_socket.sendto(master_time_packet, ("<broadcast>", 50000))
 
         # p1_bin_file.close()
 
         # If the stop key is pressed, stop the thing
-        if wait_for_keyboard_input():
+        if stop:
             break
 
         # Loop things and begin again with the next frame.
@@ -161,135 +190,135 @@ def lt1_video(video_file_name):
             break
 
 
-def lt2_video(video_file_name):
-    # Setup all that video stuff
-    vidcap = cv2.VideoCapture(video_file_name)  # Open the Video
-    video_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT)) - 1  # Get Video length
-    count = 0
+# def lt2_video(video_file_name):
+#     # Setup all that video stuff
+#     vidcap = cv2.VideoCapture(video_file_name)  # Open the Video
+#     video_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT)) - 1  # Get Video length
+#     count = 0
+#
+#     # Setup all that time stuff
+#     print("sending frame sequence to ESPs")
+#     opened_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#
+#     last_send_frame_packet_time = get_current_ntp_time_ms()
+#     frame_packet_has_been_sent = False
+#     time_offset = 200
+#     time_to_present_frame = last_send_frame_packet_time + time_offset
+#
+#     print("  present first frame at NTP time (in ms) {0}".format(time_to_present_frame))
+#
+#     while True:
+#         p1 = bytearray()  # Create / Clear byte arrays
+#         p2 = bytearray()  # Create / Clear byte arrays
+#         p3 = bytearray()  # Create / Clear byte arrays
+#         p4 = bytearray()  # Create / Clear byte arrays
+#
+#         success, image = vidcap.read()  # Read the Video Frame
+#         if not success:
+#             break
+#         size = (50, 14)
+#         image = cv2.resize(image, size)  # Resize
+#         # Some debug shit
+#         # cv2.imwrite("frame" + str(count) + ".png", image)  # Saving Image to Debug
+#         # p1_bin_file = open("p1_frame" + str(count) + ".bin", 'w+b')
+#
+#         # Prepare packages
+#         p1 = fill_bytearray_p1(p1, image, time_to_present_frame)
+#         p2 = fill_bytearray_p2(p2, image, time_to_present_frame)
+#
+#         # WAITING FOR PERMISSION TO LIFT OF
+#         if frame_packet_has_been_sent:
+#             # wait until approx. 40 ms elapsed from last packet has been sent
+#             wait_time_ms = 40.0 - (get_current_ntp_time_ms() - last_send_frame_packet_time)
+#             if wait_time_ms > 0:
+#                 sleep(wait_time_ms / 1000.0)
+#
+#         # SEND
+#         send_to_esp(opened_socket, p1, p2, p3, p4)
+#
+#         # Set time values
+#         frame_packet_has_been_sent = True
+#         last_send_frame_packet_time = get_current_ntp_time_ms()
+#         time_to_present_frame = last_send_frame_packet_time + time_offset + 40
+#
+#         # p1_bin_file.close()
+#
+#         # If the stop key is pressed, stop the thing
+#         if wait_for_keyboard_input():
+#             break
+#
+#         # Loop things and begin again with the next frame.
+#         count = count + 1
+#         if count > (video_length - 1):
+#             vidcap.release()  # Relase the Video / End
+#             break
+#
+#
+# def lt3_video(video_file_name):
+#     # Setup all that video stuff
+#     vidcap = cv2.VideoCapture(video_file_name)  # Open the Video
+#     video_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT)) - 1  # Get Video length
+#     count = 0
+#
+#     # Setup all that time stuff
+#     print("sending frame sequence to ESPs")
+#     opened_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#
+#     last_send_frame_packet_time = get_current_ntp_time_ms()
+#     frame_packet_has_been_sent = False
+#     time_offset = 200
+#     time_to_present_frame = last_send_frame_packet_time + time_offset
+#
+#     print("  present first frame at NTP time (in ms) {0}".format(time_to_present_frame))
+#
+#     while True:
+#         p1 = bytearray()  # Create / Clear byte arrays
+#         p2 = bytearray()  # Create / Clear byte arrays
+#         p3 = bytearray()  # Create / Clear byte arrays
+#         p4 = bytearray()  # Create / Clear byte arrays
+#
+#         success, image = vidcap.read()  # Read the Video Frame
+#         if not success:
+#             break
+#         size = (25, 28)
+#         image = cv2.resize(image, size)  # Resize
+#         # Some debug shit
+#         # cv2.imwrite("frame" + str(count) + ".png", image)  # Saving Image to Debug
+#         # p1_bin_file = open("p1_frame" + str(count) + ".bin", 'w+b')
+#
+#         # Prepare packages
+#         p1 = fill_bytearray_p1(p1, image, time_to_present_frame)
+#         p3 = fill_bytearray_p3(p3, image, time_to_present_frame)
+#
+#         # WAITING FOR PERMISSION TO LIFT OF
+#         if frame_packet_has_been_sent:
+#             # wait until approx. 40 ms elapsed from last packet has been sent
+#             wait_time_ms = 40.0 - (get_current_ntp_time_ms() - last_send_frame_packet_time)
+#             if wait_time_ms > 0:
+#                 sleep(wait_time_ms / 1000.0)
+#
+#         # SEND
+#         send_to_esp(opened_socket, p1, p2, p3, p4)
+#
+#         # Set time values
+#         frame_packet_has_been_sent = True
+#         last_send_frame_packet_time = get_current_ntp_time_ms()
+#         time_to_present_frame = last_send_frame_packet_time + time_offset + 40
+#
+#         # p1_bin_file.close()
+#
+#         # If the stop key is pressed, stop the thing
+#         if wait_for_keyboard_input():
+#             break
+#
+#         # Loop things and begin again with the next frame.
+#         count = count + 1
+#         if count > (video_length - 1):
+#             vidcap.release()  # Relase the Video / End
+#             break
 
-    # Setup all that time stuff
-    print("sending frame sequence to ESPs")
-    opened_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    last_send_frame_packet_time = get_current_ntp_time_ms()
-    frame_packet_has_been_sent = False
-    time_offset = 200
-    time_to_present_frame = last_send_frame_packet_time + time_offset
-
-    print("  present first frame at NTP time (in ms) {0}".format(time_to_present_frame))
-
-    while True:
-        p1 = bytearray()  # Create / Clear byte arrays
-        p2 = bytearray()  # Create / Clear byte arrays
-        p3 = bytearray()  # Create / Clear byte arrays
-        p4 = bytearray()  # Create / Clear byte arrays
-
-        success, image = vidcap.read()  # Read the Video Frame
-        if not success:
-            break
-        size = (50, 14)
-        image = cv2.resize(image, size)  # Resize
-        # Some debug shit
-        # cv2.imwrite("frame" + str(count) + ".png", image)  # Saving Image to Debug
-        # p1_bin_file = open("p1_frame" + str(count) + ".bin", 'w+b')
-
-        # Prepare packages
-        p1 = fill_bytearray_p1(p1, image, time_to_present_frame)
-        p2 = fill_bytearray_p2(p2, image, time_to_present_frame)
-
-        # WAITING FOR PERMISSION TO LIFT OF
-        if frame_packet_has_been_sent:
-            # wait until approx. 40 ms elapsed from last packet has been sent
-            wait_time_ms = 40.0 - (get_current_ntp_time_ms() - last_send_frame_packet_time)
-            if wait_time_ms > 0:
-                sleep(wait_time_ms / 1000.0)
-
-        # SEND
-        send_to_esp(opened_socket, p1, p2, p3, p4)
-
-        # Set time values
-        frame_packet_has_been_sent = True
-        last_send_frame_packet_time = get_current_ntp_time_ms()
-        time_to_present_frame = last_send_frame_packet_time + time_offset + 40
-
-        # p1_bin_file.close()
-
-        # If the stop key is pressed, stop the thing
-        if wait_for_keyboard_input():
-            break
-
-        # Loop things and begin again with the next frame.
-        count = count + 1
-        if count > (video_length - 1):
-            vidcap.release()  # Relase the Video / End
-            break
-
-
-def lt3_video(video_file_name):
-    # Setup all that video stuff
-    vidcap = cv2.VideoCapture(video_file_name)  # Open the Video
-    video_length = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT)) - 1  # Get Video length
-    count = 0
-
-    # Setup all that time stuff
-    print("sending frame sequence to ESPs")
-    opened_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-    last_send_frame_packet_time = get_current_ntp_time_ms()
-    frame_packet_has_been_sent = False
-    time_offset = 200
-    time_to_present_frame = last_send_frame_packet_time + time_offset
-
-    print("  present first frame at NTP time (in ms) {0}".format(time_to_present_frame))
-
-    while True:
-        p1 = bytearray()  # Create / Clear byte arrays
-        p2 = bytearray()  # Create / Clear byte arrays
-        p3 = bytearray()  # Create / Clear byte arrays
-        p4 = bytearray()  # Create / Clear byte arrays
-
-        success, image = vidcap.read()  # Read the Video Frame
-        if not success:
-            break
-        size = (25, 28)
-        image = cv2.resize(image, size)  # Resize
-        # Some debug shit
-        # cv2.imwrite("frame" + str(count) + ".png", image)  # Saving Image to Debug
-        # p1_bin_file = open("p1_frame" + str(count) + ".bin", 'w+b')
-
-        # Prepare packages
-        p1 = fill_bytearray_p1(p1, image, time_to_present_frame)
-        p3 = fill_bytearray_p3(p3, image, time_to_present_frame)
-
-        # WAITING FOR PERMISSION TO LIFT OF
-        if frame_packet_has_been_sent:
-            # wait until approx. 40 ms elapsed from last packet has been sent
-            wait_time_ms = 40.0 - (get_current_ntp_time_ms() - last_send_frame_packet_time)
-            if wait_time_ms > 0:
-                sleep(wait_time_ms / 1000.0)
-
-        # SEND
-        send_to_esp(opened_socket, p1, p2, p3, p4)
-
-        # Set time values
-        frame_packet_has_been_sent = True
-        last_send_frame_packet_time = get_current_ntp_time_ms()
-        time_to_present_frame = last_send_frame_packet_time + time_offset + 40
-
-        # p1_bin_file.close()
-
-        # If the stop key is pressed, stop the thing
-        if wait_for_keyboard_input():
-            break
-
-        # Loop things and begin again with the next frame.
-        count = count + 1
-        if count > (video_length - 1):
-            vidcap.release()  # Relase the Video / End
-            break
-
-
-def create_frame_with_text(background_color, text, scale, color, thickness, x, y, frame_filename="frame0.bmp"):
+def create_frame_with_text(background_color, text, scale, color, thickness, x, y):
     width = 50
     height = 28
     im = np.zeros((height, width, 3), np.uint8)
@@ -303,15 +332,159 @@ def create_frame_with_text(background_color, text, scale, color, thickness, x, y
     return im
 
 
+def create_and_show_text_animation(background_color, text, scale, color, thickness, x, y):
+    # Setup all that time stuff
+    print("sending frame sequence to ESPs")
+    opened_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    opened_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
+    opened_socket.settimeout(5)
+
+    master_time_ms = get_current_time_ms()
+    print("send master time ({0} ms) broadcast".format(master_time_ms))
+    master_time_packet = build_master_time_packet(master_time_ms)
+    opened_socket.sendto(master_time_packet, ("<broadcast>", 50000))
+
+    last_send_time_packet_time = master_time_ms
+
+    last_send_frame_packet_time = master_time_ms
+    frame_packet_has_been_sent = False
+
+    time_offset = 200
+
+    time_to_present_frame = master_time_ms + time_offset
+    print("send first frame presented at time ({0} ms) broadcast".format(time_to_present_frame))
+
+    x = 0
+
+    for i in range(300):
+        p1 = bytearray()  # Create / Clear byte arrays
+        p2 = bytearray()  # Create / Clear byte arrays
+        p3 = bytearray()  # Create / Clear byte arrays
+        p4 = bytearray()  # Create / Clear byte arrays
+
+        # Count up X Position
+
+        if x > 50:
+            x = -20
+
+        x = x + 1
+        image = create_frame_with_text(background_color, text, scale, color, thickness, x, y)
+
+        # Prepare packages
+        p1 = fill_bytearray_p1(p1, image, time_to_present_frame)
+        p2 = fill_bytearray_p2(p2, image, time_to_present_frame)
+        p3 = fill_bytearray_p3(p3, image, time_to_present_frame)
+        p4 = fill_bytearray_p4(p4, image, time_to_present_frame)
+
+
+        # WAITING FOR PERMISSION TO LIFT OF
+        if frame_packet_has_been_sent:
+            # wait until approx. 40 ms elapsed from last packet has been sent
+            wait_time_ms = 40.0 - (get_current_time_ms() - last_send_frame_packet_time)
+            if wait_time_ms > 0:
+                sleep(wait_time_ms / 1000.0)
+
+        master_time_ms = get_current_time_ms()
+
+        # SEND
+        send_to_esp(opened_socket, p1, p2, p3, p4)
+
+        # Set time values
+        frame_packet_has_been_sent = True
+        time_to_present_frame = last_send_frame_packet_time + time_offset + 40
+        last_send_frame_packet_time = master_time_ms
+
+        if (last_send_frame_packet_time - last_send_time_packet_time) > 2000:
+            # send updated master time every approx. 2000ms
+            last_send_time_packet_time = last_send_frame_packet_time
+            master_time_packet = build_master_time_packet(last_send_time_packet_time)
+            opened_socket.sendto(master_time_packet, ("<broadcast>", 50000))
+
+        # p1_bin_file.close()
+
+        # If the stop key is pressed, stop the thing
+        # if stop:
+        #     break
+
+    print("LUL")
+    show_black()
+
+
+def show_black():
+    # Setup all that time stuff
+    print("sending BLACK frame sequence to ESPs")
+    opened_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    opened_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
+    opened_socket.settimeout(5)
+
+    master_time_ms = get_current_time_ms()
+    print("send master time ({0} ms) broadcast".format(master_time_ms))
+    master_time_packet = build_master_time_packet(master_time_ms)
+    opened_socket.sendto(master_time_packet, ("<broadcast>", 50000))
+
+    last_send_time_packet_time = master_time_ms
+
+    last_send_frame_packet_time = master_time_ms
+    frame_packet_has_been_sent = False
+
+    time_offset = 200
+
+    time_to_present_frame = master_time_ms + time_offset
+    print("send first frame presented at time ({0} ms) broadcast".format(time_to_present_frame))
+
+    # Prepare Arrays
+    p1 = bytearray()  # Create / Clear byte arrays
+    p2 = bytearray()  # Create / Clear byte arrays
+    p3 = bytearray()  # Create / Clear byte arrays
+    p4 = bytearray()  # Create / Clear byte arrays
+
+    # Create Black Image
+    black = [0, 0, 0]
+    width = 50
+    height = 28
+    image = np.zeros((height, width, 3), np.uint8)
+    image[:] = turn_color_from_rgb_to_bgr(black)
+
+    # Prepare packages
+    p1 = fill_bytearray_p1(p1, image, time_to_present_frame)
+    p2 = fill_bytearray_p2(p2, image, time_to_present_frame)
+    p3 = fill_bytearray_p3(p3, image, time_to_present_frame)
+    p4 = fill_bytearray_p4(p4, image, time_to_present_frame)
+
+
+    # WAITING FOR PERMISSION TO LIFT OF
+    if frame_packet_has_been_sent:
+        # wait until approx. 40 ms elapsed from last packet has been sent
+        wait_time_ms = 40.0 - (get_current_time_ms() - last_send_frame_packet_time)
+        if wait_time_ms > 0:
+            sleep(wait_time_ms / 1000.0)
+
+    master_time_ms = get_current_time_ms()
+
+    # SEND
+    send_to_esp(opened_socket, p1, p2, p3, p4)
+
+    # Set time values
+    frame_packet_has_been_sent = True
+    time_to_present_frame = last_send_frame_packet_time + time_offset + 40
+    last_send_frame_packet_time = master_time_ms
+
+    if (last_send_frame_packet_time - last_send_time_packet_time) > 2000:
+        # send updated master time every approx. 2000ms
+        last_send_time_packet_time = last_send_frame_packet_time
+        master_time_packet = build_master_time_packet(last_send_time_packet_time)
+        opened_socket.sendto(master_time_packet, ("<broadcast>", 50000))
+
+
 def send_to_esp(opened_socket, package1, package2, package3, package4):
-    opened_socket.sendto(package1, ("ESP-158", 50000))  # Send data to P1
-    opened_socket.sendto(package2, ("192.168.2.160", 50000))  # Send data to P2
-    opened_socket.sendto(package3, ("ESP-157", 50000))  # Send data to P3
-    opened_socket.sendto(package4, ("192.168.2.161", 50000))  # Send data to P4
+    opened_socket.sendto(package1, ("192.168.2.162", 50000))
+    opened_socket.sendto(package2, ("192.168.2.164", 50000))
+    opened_socket.sendto(package3, ("192.168.2.165", 50000))
+    opened_socket.sendto(package4, ("192.168.2.166", 50000))
 
 
 def fill_bytearray_p1(package, image, time_to_present_frame):
-    package += struct.pack('<Q', round(time_to_present_frame))  # TimeStamp
+    package += struct.pack('<Q', round(time_to_present_frame))
     # LED Values
     for x in range(0, 14, 2):
         for y in range(0, 25, 1):
@@ -425,9 +598,10 @@ def turn_color_from_rgb_to_bgr(color_rgb):
     return color
 
 
-def wait_for_keyboard_input():
-    if keyboard.is_pressed('f6'):
-        return True
+def stop_function():
+    global stop
+    stop = True
+
 
 
 
