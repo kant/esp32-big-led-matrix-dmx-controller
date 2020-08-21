@@ -327,13 +327,16 @@ def create_frame_with_text(background_color, text, scale, color, thickness, x, y
     position = (x, y)  # Text position
     font = cv2.FONT_HERSHEY_SIMPLEX  # Font of the text
 
+    textsize = cv2.getTextSize(text, font, scale, thickness)[0]   # get text size
+
     cv2.putText(im, text, position, font, scale, turn_color_from_rgb_to_bgr(color), thickness, cv2.LINE_4)
 
-    return im
+    return [im, textsize]
 
 
-def create_and_show_text_animation(background_color, text, scale, color, thickness, x, y):
+def create_and_show_text_animation(background_color, text, scale, color, thickness, x, y, speed):
     # Setup all that time stuff
+    global x_add
     print("sending frame sequence to ESPs")
     opened_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     opened_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
@@ -354,21 +357,47 @@ def create_and_show_text_animation(background_color, text, scale, color, thickne
     time_to_present_frame = master_time_ms + time_offset
     print("send first frame presented at time ({0} ms) broadcast".format(time_to_present_frame))
 
-    x = 0
+    text_size = create_frame_with_text(background_color, text, scale, color, thickness, x, y)[1]
+
+    # Calculate Start Point
+    x = 0 - text_size[0]
+
+    print(speed)
+    # Calculate speed
+    if speed == 1:
+        x_add = 1
+        # x + 0,5
+    if speed == 2:
+        x_add = 2
+        # x + 1
+    if speed == 3:
+        x_add = 3
+        # x + 1,5
+    if speed == 4:
+        x_add = 4
+        # x + 2
+    if speed == 5:
+        x_add = 5
+        # x + 2,5
+
+    print("Start ")
 
     for i in range(300):
+        print(i)
         p1 = bytearray()  # Create / Clear byte arrays
         p2 = bytearray()  # Create / Clear byte arrays
         p3 = bytearray()  # Create / Clear byte arrays
         p4 = bytearray()  # Create / Clear byte arrays
 
         # Count up X Position
-
+        text_size = create_frame_with_text(background_color, text, scale, color, thickness, x, y)[1]
         if x > 50:
-            x = -20
+            x = 0 - text_size[0]
 
-        x = x + 1
-        image = create_frame_with_text(background_color, text, scale, color, thickness, x, y)
+
+
+        x = x + x_add
+        image = create_frame_with_text(background_color, text, scale, color, thickness, x, y)[0]
 
         # Prepare packages
         p1 = fill_bytearray_p1(p1, image, time_to_present_frame)
@@ -407,6 +436,7 @@ def create_and_show_text_animation(background_color, text, scale, color, thickne
         #     break
 
     print("LUL")
+    time.sleep(1)
     show_black()
 
 
@@ -481,6 +511,10 @@ def send_to_esp(opened_socket, package1, package2, package3, package4):
     opened_socket.sendto(package2, ("192.168.2.164", 50000))
     opened_socket.sendto(package3, ("192.168.2.165", 50000))
     opened_socket.sendto(package4, ("192.168.2.166", 50000))
+    # opened_socket.sendto(package1, ("192.168.2.166", 50000))
+    # opened_socket.sendto(package2, ("192.168.2.162", 50000))
+    # opened_socket.sendto(package3, ("192.168.2.164", 50000))
+    # opened_socket.sendto(package4, ("192.168.2.165", 50000))
 
 
 def fill_bytearray_p1(package, image, time_to_present_frame):

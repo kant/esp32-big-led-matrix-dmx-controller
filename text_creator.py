@@ -3,7 +3,7 @@ import os
 import sys
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPixmap, QTextCursor, QColor
-from PyQt5.QtWidgets import QMainWindow, QLabel, QApplication, QWidget, QColorDialog, QInputDialog
+from PyQt5.QtWidgets import QMainWindow, QLabel, QApplication, QWidget, QColorDialog, QInputDialog, QCheckBox
 from PyQt5 import uic, QtCore, QtGui
 import cv2
 from PyQt5 import QtWidgets
@@ -35,8 +35,13 @@ class MainWindow(QMainWindow):
         self.inputTextThickness = self.findChild(QtWidgets.QLineEdit, 'inputTextThickness')  # Find the input field
         self.inputX = self.findChild(QtWidgets.QLineEdit, 'inputX')  # Find the input field
         self.inputY = self.findChild(QtWidgets.QLineEdit, 'inputY')  # Find the input field
+        self.inputSpeed = self.findChild(QtWidgets.QLineEdit, 'inputSpeed')  # Find the input field
         # Pointer to Image Label
         self.image_frame = self.findChild(QtWidgets.QLabel, 'image_frame')  # Find the image frame label
+
+        # Checkbox
+        self.centerText = self.findChild(QtWidgets.QCheckBox,'centerText')  # Find the check box
+        self.centerText.stateChanged.connect(lambda: self.center(self.centerText))
 
         # Initiation of the important parameters for the image creation
         self.background_color = [0, 0, 0]
@@ -46,13 +51,17 @@ class MainWindow(QMainWindow):
         self.text_thickness = self.inputTextThickness.text()
         self.x_coordinate = self.inputX.text()
         self.y_coordinate = self.inputY.text()
+        self.speed = self.inputSpeed.text()
 
     def update_button_pressed(self):
         # Create Picture
         cv_img = create_frame_with_text(self.background_color, self.inputText.text(), float(self.inputScale.text()),
                                         self.text_color, int(self.inputTextThickness.text()),
-                                        int(self.inputX.text()), int(self.inputY.text()))
-        # print(self.inputText.text())
+                                        int(self.inputX.text()), int(self.inputY.text()))[0]
+
+        print(create_frame_with_text(self.background_color, self.inputText.text(), float(self.inputScale.text()),
+                                        self.text_color, int(self.inputTextThickness.text()),
+                                        int(self.inputX.text()), int(self.inputY.text()))[1])
 
         qt_img = self.convert_cv_qt(cv_img)
         self.image_frame.setPixmap(qt_img)
@@ -60,7 +69,7 @@ class MainWindow(QMainWindow):
         # show image on LED Wall
         create_and_show_text_animation(self.background_color, self.inputText.text(), float(self.inputScale.text()),
                                        self.text_color, int(self.inputTextThickness.text()),
-                                       int(self.inputX.text()), int(self.inputY.text()))
+                                       int(self.inputX.text()), int(self.inputY.text()), int(self.inputSpeed.text()))
 
 
 
@@ -94,7 +103,7 @@ class MainWindow(QMainWindow):
         if ok:
             img = create_frame_with_text(self.background_color, self.inputText.text(), float(self.inputScale.text()),
                                          self.text_color, int(self.inputTextThickness.text()),
-                                         int(self.inputX.text()), int(self.inputY.text()))
+                                         int(self.inputX.text()), int(self.inputY.text()))[0]
 
             cv2.imwrite(text + '.bmp', img)
             self.close()

@@ -44,7 +44,7 @@ class MainWindow(QMainWindow):
     def show_button_pressed(self):
         video_file_name = self.file_path
         th.Thread(target=lt1_video(video_file_name), args=(), name='video', daemon=True).start()
-        # show_black()
+
 
 
     def stop_button_pressed(self):
