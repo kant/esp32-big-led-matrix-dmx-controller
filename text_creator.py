@@ -41,7 +41,7 @@ class MainWindow(QMainWindow):
 
         # Checkbox
         self.centerText = self.findChild(QtWidgets.QCheckBox,'centerText')  # Find the check box
-        self.centerText.stateChanged.connect(lambda: self.center(self.centerText))
+        self.centerText.stateChanged.connect(lambda: self.center_text(self.centerText))
 
         # Initiation of the important parameters for the image creation
         self.background_color = [0, 0, 0]
@@ -52,6 +52,7 @@ class MainWindow(QMainWindow):
         self.x_coordinate = self.inputX.text()
         self.y_coordinate = self.inputY.text()
         self.speed = self.inputSpeed.text()
+        self.center = False
 
     def update_button_pressed(self):
         # Create Picture
@@ -89,6 +90,13 @@ class MainWindow(QMainWindow):
         new_rgb = tuple(int(h[i:i + 2], 16) for i in (0, 2, 3))
         # print(new_rgb)
         self.text_color = list(new_rgb)
+
+    def center_text(self, centerText):
+        if centerText:
+            self.center = True
+
+
+
 
     def convert_cv_qt(self, cv_img):
         rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
