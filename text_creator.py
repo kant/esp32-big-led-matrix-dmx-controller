@@ -58,11 +58,11 @@ class MainWindow(QMainWindow):
         # Create Picture
         cv_img = create_frame_with_text(self.background_color, self.inputText.text(), float(self.inputScale.text()),
                                         self.text_color, int(self.inputTextThickness.text()),
-                                        int(self.inputX.text()), int(self.inputY.text()))[0]
+                                        int(self.inputX.text()), int(self.inputY.text()), center=True)[0]
 
         print(create_frame_with_text(self.background_color, self.inputText.text(), float(self.inputScale.text()),
-                                        self.text_color, int(self.inputTextThickness.text()),
-                                        int(self.inputX.text()), int(self.inputY.text()))[1])
+                                     self.text_color, int(self.inputTextThickness.text()),
+                                     int(self.inputX.text()), int(self.inputY.text()), center=True)[1])
 
         qt_img = self.convert_cv_qt(cv_img)
         self.image_frame.setPixmap(qt_img)
@@ -70,7 +70,8 @@ class MainWindow(QMainWindow):
         # show image on LED Wall
         create_and_show_text_animation(self.background_color, self.inputText.text(), float(self.inputScale.text()),
                                        self.text_color, int(self.inputTextThickness.text()),
-                                       int(self.inputX.text()), int(self.inputY.text()), int(self.inputSpeed.text()))
+                                       int(self.inputX.text()), int(self.inputY.text()), int(self.inputSpeed.text()),
+                                       center=True)
 
 
 
@@ -94,8 +95,6 @@ class MainWindow(QMainWindow):
     def center_text(self, centerText):
         if centerText:
             self.center = True
-
-
 
 
     def convert_cv_qt(self, cv_img):

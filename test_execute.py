@@ -29,7 +29,14 @@ def main():
     # create_frame_with_text(background_color, text, scale, text_color, text_thickness, x, y)
 
     # lt1_video(video_file_name)
-    show_black()
+    # show_black()
+    # cv2.imwrite("image.bmp", create_frame_with_text(background_color=[255, 0, 0], text="Hallo", scale=1,
+    #                                                 color=[0, 255, 255], thickness=1, x=0, y=15, center=True)[0])
+
+    create_and_show_text_animation(background_color=[255, 0, 0], text="Hallo", scale=1,
+                                   color=[0, 255, 255], thickness=1, x=0, y=15, speed=1, center=True)
+
+
 
 
 if __name__ == '__main__':

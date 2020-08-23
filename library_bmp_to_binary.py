@@ -13,6 +13,7 @@ import keyboard
 stop = False
 
 
+
 # def single_bmp_to_binary(bmp_file_name, bin_file_name):
 #     print("Converting to Binary Code")
 #     print("...")
@@ -318,23 +319,28 @@ def lt1_video(video_file_name):
 #             break
 
 
-def create_frame_with_text(background_color, text, scale, color, thickness, x, y):
+def create_frame_with_text(background_color, text, scale, color, thickness, x, y, center: bool):
     width = 50
     height = 28
     im = np.zeros((height, width, 3), np.uint8)
     im[:] = turn_color_from_rgb_to_bgr(background_color)
 
-    position = (x, y)  # Text position
     font = cv2.FONT_HERSHEY_SIMPLEX  # Font of the text
+    textsize = cv2.getTextSize(text, font, scale, thickness)[0]  # get text size
 
-    textsize = cv2.getTextSize(text, font, scale, thickness)[0]   # get text size
+    if center:
+        y_temp = height / 2
+        y = y_temp + textsize[1] / 2
+
+    position = (int(x), int(y))  # Text position
+
 
     cv2.putText(im, text, position, font, scale, turn_color_from_rgb_to_bgr(color), thickness, cv2.LINE_4)
 
     return [im, textsize]
 
 
-def create_and_show_text_animation(background_color, text, scale, color, thickness, x, y, speed):
+def create_and_show_text_animation(background_color, text, scale, color, thickness, x, y, speed, center):
     # Setup all that time stuff
     global x_add
     print("sending frame sequence to ESPs")
@@ -357,7 +363,7 @@ def create_and_show_text_animation(background_color, text, scale, color, thickne
     time_to_present_frame = master_time_ms + time_offset
     print("send first frame presented at time ({0} ms) broadcast".format(time_to_present_frame))
 
-    text_size = create_frame_with_text(background_color, text, scale, color, thickness, x, y)[1]
+    text_size = create_frame_with_text(background_color, text, scale, color, thickness, x, y, center)[1]
 
     # Calculate Start Point
     x = 0 - text_size[0]
@@ -390,14 +396,14 @@ def create_and_show_text_animation(background_color, text, scale, color, thickne
         p4 = bytearray()  # Create / Clear byte arrays
 
         # Count up X Position
-        text_size = create_frame_with_text(background_color, text, scale, color, thickness, x, y)[1]
+        text_size = create_frame_with_text(background_color, text, scale, color, thickness, x, y, center)[1]
         if x > 50:
             x = 0 - text_size[0]
 
 
 
         x = x + x_add
-        image = create_frame_with_text(background_color, text, scale, color, thickness, x, y)[0]
+        image = create_frame_with_text(background_color, text, scale, color, thickness, x, y, center)[0]
 
         # Prepare packages
         p1 = fill_bytearray_p1(p1, image, time_to_present_frame)
