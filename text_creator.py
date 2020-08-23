@@ -14,7 +14,7 @@ from library_bmp_to_binary import *
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        uic.loadUi("D:\\Projekte\\led-matrix-qt-gui\\text_creator.ui", self)
+        uic.loadUi("ui\\text_creator.ui", self)
         # POINTERS TO ELEMENTS IN THE UI FILE
         # Pointer to buttons
         self.updateButton = self.findChild(QtWidgets.QPushButton, 'updateButton')  # Find the button

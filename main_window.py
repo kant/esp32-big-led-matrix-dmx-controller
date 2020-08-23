@@ -15,7 +15,7 @@ from library_bmp_to_binary import *
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        uic.loadUi("D:\\Projekte\\led-matrix-qt-gui\\main_gui.ui", self)
+        uic.loadUi("ui\\main_gui.ui", self)
 
         # Creating the Thread pool
         self.threadpool = QThreadPool()
