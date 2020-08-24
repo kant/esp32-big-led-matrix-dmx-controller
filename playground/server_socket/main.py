@@ -41,6 +41,9 @@ def main():
                 if not connection_broken:
                     print("  data:")
                     print("    {0}".format(received_data.decode('utf-8')))
+                    answer = bytearray()
+                    answer.append(1)
+                    client_socket.send(answer)
                     break
             if connection_broken:
                 break

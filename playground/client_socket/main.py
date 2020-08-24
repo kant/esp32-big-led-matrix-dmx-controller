@@ -11,7 +11,22 @@ def main():
     data = "Hello".encode('utf-8')
     message.append(len(data))
     message += data
-    tcp_socket.send(message)
+    bytes_to_send = len(message)
+    total_bytes_sent = 0
+    connection_broken = False
+    while total_bytes_sent < bytes_to_send:
+        bytes_sent = tcp_socket.send(message)
+        if bytes_sent == 0:
+            print("  connection broken")
+            connection_broken = True
+            break
+        total_bytes_sent += bytes_sent
+    if not connection_broken:
+        answer = tcp_socket.recv(1)
+        if answer == b'':
+            print("  connection broken")
+        elif answer[0] == 1:
+            print("  server has accepted the command")
     tcp_socket.close()
 
     print("done")
