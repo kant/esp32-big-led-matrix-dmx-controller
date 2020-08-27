@@ -1,11 +1,16 @@
 import socket
 
 
+# IP = "127.0.0.1"
+IP = "192.168.2.162"
+
+PORT = 50001
+
 def main():
     print("client connects server and sends data...")
 
     tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    tcp_socket.connect(("127.0.0.1", 50001))
+    tcp_socket.connect((IP, PORT))
     message = bytearray()
     message.append(1)
     data = "Hello".encode('utf-8')
