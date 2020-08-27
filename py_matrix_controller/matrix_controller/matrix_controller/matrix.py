@@ -8,7 +8,7 @@ from .frame_provider import FrameProvider
 
 class Matrix(object):
 
-    MASTER_TIME_OFFSET: int = 50    # 50ms
+    MASTER_TIME_OFFSET: int = 100   # 100ms
     BLACK_COLOR: list = [0, 0, 0]   # all LEDs black
 
     endpoints: list = []

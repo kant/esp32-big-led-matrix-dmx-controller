@@ -10,7 +10,7 @@ from .frame_queue import FrameQueue
 
 class FrameSenderThread(threading.Thread):
 
-    MASTER_TIME_OFFSET: int = 50            # 50ms
+    MASTER_TIME_OFFSET: int = 100           # 100ms
     MASTER_TIME_SYNC_INTERVAL: int = 1000   # 1000ms
     FRAME_DISTANCE: int = 40                # 40ms / 25fps
 
