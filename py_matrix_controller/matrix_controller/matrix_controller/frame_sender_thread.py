@@ -3,7 +3,7 @@ import threading
 
 from time import sleep
 
-from .connection import Connection
+from .udp_connection import UdpConnection
 from .packet_builder import PacketBuilder
 from .frame_queue import FrameQueue
 
@@ -14,7 +14,7 @@ class FrameSenderThread(threading.Thread):
     MASTER_TIME_SYNC_INTERVAL: int = 1000   # 1000ms
     FRAME_DISTANCE: int = 40                # 40ms / 25fps
 
-    connection: Connection = Connection()               # connection object to handle UDP communication
+    connection: UdpConnection = UdpConnection()               # connection object to handle UDP communication
     packet_builder: PacketBuilder = PacketBuilder()     # packet builder to prepare packets the are sent over UDP
 
     stop_event: threading.Event = threading.Event()     # event to signal the thread that it should stop

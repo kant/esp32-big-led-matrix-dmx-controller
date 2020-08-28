@@ -1,6 +1,6 @@
 import socket
 
-class Connection(object):
+class UdpConnection(object):
 
     UDP_PORT: int = 50000
 
