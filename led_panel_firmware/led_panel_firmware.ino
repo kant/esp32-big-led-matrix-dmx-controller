@@ -17,6 +17,7 @@
 #define PERF_MEASUREMENT_PIN                      22        // output used for performance measurement with logic analyzer; will be set, when frame is shown; will be reset approx. 20ms after it has been set
 
 #define RECEIVE_DATA_UDP_PORT                     50000
+#define RECEIVE_DATA_UDP_PORT_TPM                 65506
 #define TCP_SERVER_PORT                           50001
 
 #define FRAME_PERIOD_TOLERANCE                    5         // if the time to show a frame elapsed for not more than FRAME_PERIOD_TOLERANCE ms, the frame is nevertheless directly displayed
@@ -95,6 +96,7 @@ uint8_t frameRingBufferWriteIndex = 0;
 
 
 EthernetUDP udp;
+EthernetUDP udpTpm;
 EthernetServer tcpServer(TCP_SERVER_PORT);
 
 
@@ -206,7 +208,7 @@ void readNetworkSettingsFromSpiffs()
 void initNetworkSettingsFileContent(networkSettingsFileContentType& networkSettingsFileContent)
 {
   networkSettingsFileContent = {
-    true,                                   // use DHCP (default)
+    false,                                  // don't use DHCP (default)
     {192, 168, 1, 101},                     // default IP adress if not DHCP is used
     {255, 255, 255, 0},                     // default subnet mask if not DHCP is used
     {192, 168, 1, 1},                       // default gateway if not DHCP is used
@@ -321,13 +323,19 @@ void initEthernetBoard()
 
 void initUdpListener()
 {
-  Serial.printf("Initializing UDP listener for port...\n", RECEIVE_DATA_UDP_PORT);
+  initUdpPortListener(udp, RECEIVE_DATA_UDP_PORT);
+  initUdpPortListener(udpTpm, RECEIVE_DATA_UDP_PORT_TPM);
+}
+
+void initUdpPortListener(EthernetUDP& udp, uint16_t udpPort)
+{
+  Serial.printf("Initializing UDP listener for port...\n", udpPort);
   
   bool listenSucceeded = false;
   do
   {
-    Serial.printf("  Attempting to listen to port %u ...\n", RECEIVE_DATA_UDP_PORT);
-    listenSucceeded = udp.begin(RECEIVE_DATA_UDP_PORT);
+    Serial.printf("  Attempting to listen to port %u ...\n", udpPort);
+    listenSucceeded = udp.begin(udpPort);
     if(!listenSucceeded)
     {
       delay(1000);
@@ -502,6 +510,32 @@ void getFrameFromRingBuffer()
   }
 }
 
+void receivedUdpTpmPacket(int packetSize)
+{
+  if(udpTpm.localPort() == RECEIVE_DATA_UDP_PORT_TPM)
+  {
+    if(packetSize >= 1057)
+    {
+      // new frame packet
+      processTpmFramePacket();
+    }
+  }
+}
+
+void processTpmFramePacket()
+{
+  uint8_t header[6];
+  udpTpm.read(&header[0], 6);
+
+  udpTpm.read((uint8_t*)(&leds[0]), PIXEL_DATA_SIZE);
+
+  uint8_t endByte;
+  udpTpm.read(&endByte, 1);
+
+  showFrame();
+}
+
+
 void loop()
 {
   if(perfMeasurementPinSetTime != 0)
@@ -521,6 +555,15 @@ void loop()
 //Serial.printf("received udp packet of size %d bytes\n", packetSize);
     
     receivedUdpPacket(packetSize);
+  }
+
+  packetSize = udpTpm.parsePacket();
+  if(packetSize)
+  {
+// DEBUG    
+//Serial.printf("received udp TPM2 packet of size %d bytes\n", packetSize);
+    
+    receivedUdpTpmPacket(packetSize);
   }
   
   // do the following processing all the time
