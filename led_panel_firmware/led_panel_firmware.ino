@@ -16,6 +16,8 @@
 #define ETH_RESET_PIN                             26  
 #define PERF_MEASUREMENT_PIN                      22        // output used for performance measurement with logic analyzer; will be set, when frame is shown; will be reset approx. 20ms after it has been set
 
+#define MAX_DHCP_TRIES                            2         // max count of tries connecting over DHCP before working with static IP
+
 #define RECEIVE_DATA_UDP_PORT                     50000
 #define RECEIVE_DATA_UDP_PORT_TPM                 65506
 #define TCP_SERVER_PORT                           50001
@@ -250,11 +252,12 @@ void initEthernet()
   Ethernet.init(ETH_CS_PIN);
 
   bool ethernetConnected = false;
+  uint8_t dhcpTries = 0;
   do
   {
     initEthernetBoard();
 
-    if(networkSettings.useDhcp)
+    if((networkSettings.useDhcp) && (dhcpTries < MAX_DHCP_TRIES))
     {
       Serial.println("  Attempting to connect over DHCP...");
       ethernetConnected = Ethernet.begin(networkSettings.macAddress);
@@ -264,10 +267,14 @@ void initEthernet()
         {
           Serial.println("  Ethernet board not found");
         }
+        else
+        {
+          ++dhcpTries;
+        }
         delay(1000);
       }
     }
-    else
+    if((!networkSettings.useDhcp) || (dhcpTries >= MAX_DHCP_TRIES))
     {
       Serial.println("  Connecting with static IP address...");
       IPAddress ipAddress = IPAddress(networkSettings.ipAddress);
