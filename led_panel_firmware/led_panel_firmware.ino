@@ -12,6 +12,7 @@
 #define NUM_LEDS                                  350
 
 #define STATUS_LED_PIN                            16
+#define FACTORY_DEFAULTS_PIN                      17
 #define ETH_CS_PIN                                5
 #define LED_DATA_PIN                              25
 #define ETH_RESET_PIN                             26  
@@ -106,6 +107,9 @@ EthernetServer tcpServer(TCP_SERVER_PORT);
 uint32_t perfMeasurementPinSetTime = 0;
 
 
+bool waitingForPowerOffAfterFactoryDefaults = false;
+bool ledOffWhileWaitingForPowerOffAfterFactoryDefaults = false;
+
 void setup()
 {
   Serial.begin(115200);
@@ -141,6 +145,8 @@ void initIo()
 
   pinMode(STATUS_LED_PIN, OUTPUT);
   digitalWrite(STATUS_LED_PIN, LOW);
+
+  pinMode(FACTORY_DEFAULTS_PIN, INPUT_PULLUP);
   
   Serial.println("...IO pins successfully initialized");
 }
@@ -225,7 +231,7 @@ void readNetworkSettingsFromSpiffs()
 void initNetworkSettingsFileContent(networkSettingsFileContentType& networkSettingsFileContent)
 {
   networkSettingsFileContent = {
-    false,                                  // don't use DHCP (default)
+    true,                                   // use DHCP (default)
     {192, 168, 1, 101},                     // default IP adress if not DHCP is used
     {255, 255, 255, 0},                     // default subnet mask if not DHCP is used
     {192, 168, 1, 1},                       // default gateway if not DHCP is used
@@ -560,6 +566,30 @@ void processTpmFramePacket()
 
 void loop()
 {
+  if(waitingForPowerOffAfterFactoryDefaults)
+  {
+    // let the status LED blink while waiting for power off/on by user after setting factory defaults
+    delay(200);
+    if(ledOffWhileWaitingForPowerOffAfterFactoryDefaults)
+    {
+      digitalWrite(STATUS_LED_PIN, LOW);
+    }
+    else
+    {
+      digitalWrite(STATUS_LED_PIN, HIGH);
+    }
+    ledOffWhileWaitingForPowerOffAfterFactoryDefaults = !ledOffWhileWaitingForPowerOffAfterFactoryDefaults;
+    // do nothing else but waiting for the use to power off/on
+    return;
+  }
+  if(digitalRead(FACTORY_DEFAULTS_PIN) == LOW)
+  {
+    // set factory defaults
+    factoryDefaults();
+    // do nothing else but waiting for the use to power off/on
+    return;  
+  }
+  
   if(perfMeasurementPinSetTime != 0)
   {
     if((millis() - perfMeasurementPinSetTime) >= 20)
@@ -671,6 +701,23 @@ void loop()
   }
 
   processTcp();
+}
+
+void factoryDefaults()
+{
+  Serial.println("Writing factory defaults...");
+
+  networkSettingsFileContentType networkSettingsFileContent;
+  initNetworkSettingsFileContent(networkSettingsFileContent);
+
+  if(!writeNetworkSettingsToSpiffs(networkSettingsFileContent))
+  {
+    Serial.println("  failure during writing default network settings");
+  }
+
+  waitingForPowerOffAfterFactoryDefaults = true;
+  
+  Serial.println("...Factory defaults have been written - please power off and on again");
 }
 
 void processTcp()
