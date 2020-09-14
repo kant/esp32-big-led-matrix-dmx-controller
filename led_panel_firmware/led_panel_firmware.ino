@@ -11,6 +11,7 @@
 
 #define NUM_LEDS                                  350
 
+#define STATUS_LED_PIN                            16
 #define ETH_CS_PIN                                5
 #define LED_DATA_PIN                              25
 #define ETH_RESET_PIN                             26  
@@ -112,8 +113,7 @@ void setup()
   delay(3000);
   Serial.println("bootup...");
 
-  pinMode(PERF_MEASUREMENT_PIN, OUTPUT);
-  digitalWrite(PERF_MEASUREMENT_PIN, LOW);
+  initIo();
 
   initFrameRingBuffer();
   
@@ -128,6 +128,21 @@ void setup()
   initUdpListener();
 
   initTcpListener();
+
+  digitalWrite(STATUS_LED_PIN, HIGH);
+}
+
+void initIo()
+{
+  Serial.println("Initializing IO pins...");
+  
+  pinMode(PERF_MEASUREMENT_PIN, OUTPUT);
+  digitalWrite(PERF_MEASUREMENT_PIN, LOW);
+
+  pinMode(STATUS_LED_PIN, OUTPUT);
+  digitalWrite(STATUS_LED_PIN, LOW);
+  
+  Serial.println("...IO pins successfully initialized");
 }
 
 void initFrameRingBuffer()
