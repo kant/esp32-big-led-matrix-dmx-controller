@@ -107,6 +107,9 @@ EthernetServer tcpServer(TCP_SERVER_PORT);
 uint32_t perfMeasurementPinSetTime = 0;
 
 
+bool waitingForPowerOffAfterFactoryDefaults = false;
+bool ledOffWhileWaitingForPowerOffAfterFactoryDefaults = false;
+
 void setup()
 {
   Serial.begin(115200);
@@ -563,9 +566,24 @@ void processTpmFramePacket()
 
 void loop()
 {
+  if(waitingForPowerOffAfterFactoryDefaults)
+  {
+    if(ledOffWhileWaitingForPowerOffAfterFactoryDefaults)
+    {
+      digitalWrite(STATUS_LED_PIN, LOW);
+    }
+    else
+    {
+      digitalWrite(STATUS_LED_PIN, HIGH);
+    }
+    ledOffWhileWaitingForPowerOffAfterFactoryDefaults = !ledOffWhileWaitingForPowerOffAfterFactoryDefaults;
+    sleep(200);
+    return;
+  }
   if(digitalRead(FACTORY_DEFAULTS_PIN) == LOW)
   {
-    factoryDefaults();    
+    factoryDefaults();
+    return;  
   }
   
   if(perfMeasurementPinSetTime != 0)
@@ -692,10 +710,10 @@ void factoryDefaults()
   {
     Serial.println("  failure during writing default network settings");
   }
+
+  waitingForPowerOffAfterFactoryDefaults = true;
   
-  Serial.println("################################### restarting... ###################################");
-  delay(1000);
-  ESP.restart();
+  Serial.println("...Factory defaults have been written - please power off and on again");
 }
 
 void processTcp()
