@@ -12,6 +12,7 @@
 #define NUM_LEDS                                  350
 
 #define STATUS_LED_PIN                            16
+#define FACTORY_DEFAULTS_PIN                      17
 #define ETH_CS_PIN                                5
 #define LED_DATA_PIN                              25
 #define ETH_RESET_PIN                             26  
@@ -141,6 +142,8 @@ void initIo()
 
   pinMode(STATUS_LED_PIN, OUTPUT);
   digitalWrite(STATUS_LED_PIN, LOW);
+
+  pinMode(FACTORY_DEFAULTS_PIN, INPUT_PULLUP);
   
   Serial.println("...IO pins successfully initialized");
 }
@@ -560,6 +563,11 @@ void processTpmFramePacket()
 
 void loop()
 {
+  if(digitalRead(FACTORY_DEFAULTS_PIN) == LOW)
+  {
+    factoryDefaults();    
+  }
+  
   if(perfMeasurementPinSetTime != 0)
   {
     if((millis() - perfMeasurementPinSetTime) >= 20)
@@ -671,6 +679,23 @@ void loop()
   }
 
   processTcp();
+}
+
+void factoryDefaults()
+{
+  Serial.println("Writing factory defaults...");
+
+  networkSettingsFileContentType networkSettingsFileContent;
+  initNetworkSettingsFileContent(networkSettingsFileContent);
+
+  if(!writeNetworkSettingsToSpiffs(networkSettingsFileContent))
+  {
+    Serial.println("  failure during writing default network settings");
+  }
+  
+  Serial.println("################################### restarting... ###################################");
+  delay(1000);
+  ESP.restart();
 }
 
 void processTcp()
