@@ -568,6 +568,7 @@ void loop()
 {
   if(waitingForPowerOffAfterFactoryDefaults)
   {
+    delay(200);
     if(ledOffWhileWaitingForPowerOffAfterFactoryDefaults)
     {
       digitalWrite(STATUS_LED_PIN, LOW);
@@ -577,7 +578,6 @@ void loop()
       digitalWrite(STATUS_LED_PIN, HIGH);
     }
     ledOffWhileWaitingForPowerOffAfterFactoryDefaults = !ledOffWhileWaitingForPowerOffAfterFactoryDefaults;
-    sleep(200);
     return;
   }
   if(digitalRead(FACTORY_DEFAULTS_PIN) == LOW)
