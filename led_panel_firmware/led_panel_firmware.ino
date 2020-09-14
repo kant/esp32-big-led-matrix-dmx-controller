@@ -228,7 +228,7 @@ void readNetworkSettingsFromSpiffs()
 void initNetworkSettingsFileContent(networkSettingsFileContentType& networkSettingsFileContent)
 {
   networkSettingsFileContent = {
-    false,                                  // don't use DHCP (default)
+    true,                                   // use DHCP (default)
     {192, 168, 1, 101},                     // default IP adress if not DHCP is used
     {255, 255, 255, 0},                     // default subnet mask if not DHCP is used
     {192, 168, 1, 1},                       // default gateway if not DHCP is used
