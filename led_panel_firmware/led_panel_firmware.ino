@@ -568,6 +568,7 @@ void loop()
 {
   if(waitingForPowerOffAfterFactoryDefaults)
   {
+    // let the status LED blink while waiting for power off/on by user after setting factory defaults
     delay(200);
     if(ledOffWhileWaitingForPowerOffAfterFactoryDefaults)
     {
@@ -578,11 +579,14 @@ void loop()
       digitalWrite(STATUS_LED_PIN, HIGH);
     }
     ledOffWhileWaitingForPowerOffAfterFactoryDefaults = !ledOffWhileWaitingForPowerOffAfterFactoryDefaults;
+    // do nothing else but waiting for the use to power off/on
     return;
   }
   if(digitalRead(FACTORY_DEFAULTS_PIN) == LOW)
   {
+    // set factory defaults
     factoryDefaults();
+    // do nothing else but waiting for the use to power off/on
     return;  
   }
   
