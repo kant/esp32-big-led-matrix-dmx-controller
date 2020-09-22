@@ -14,11 +14,11 @@ class FrameScheduler(object):
     frame_sender_thread: FrameSenderThread
     frame_provider: FrameProvider
 
-    def __init__(self, frame_provider: FrameProvider):
+    def __init__(self, frame_provider: FrameProvider, endpoints: list):
         self.frame_provider = frame_provider
         self.frame_queue = FrameQueue()
         self.frame_grabber_thread = FrameGrabberThread(self.frame_provider, self.frame_queue)
-        self.frame_sender_thread = FrameSenderThread(self.frame_queue)
+        self.frame_sender_thread = FrameSenderThread(self.frame_queue, endpoints)
 
     def start(self) -> None:
         self.frame_queue.clear()

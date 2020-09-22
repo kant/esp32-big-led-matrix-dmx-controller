@@ -11,9 +11,6 @@ class UdpConnection(object):
         self.udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
         self.udp_socket.settimeout(5)
 
-    def broadcast(self, packet: bytearray) -> None:
-        self.udp_socket.sendto(packet, ("<broadcast>", self.UDP_PORT))
-
     def send_packet(self, endpoint: str, packet: bytearray) -> None:
         self.udp_socket.sendto(packet, (endpoint, self.UDP_PORT))
 
