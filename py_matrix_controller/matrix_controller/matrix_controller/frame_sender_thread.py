@@ -19,10 +19,12 @@ class FrameSenderThread(threading.Thread):
 
     stop_event: threading.Event = threading.Event()     # event to signal the thread that it should stop
     frame_queue: FrameQueue = None                      # queue to hold frames
+    endpoints: list                                     # list of endpoints
 
-    def __init__(self, frame_queue: FrameQueue):
+    def __init__(self, frame_queue: FrameQueue, endpoints: list):
         threading.Thread.__init__(self)
         self.frame_queue = frame_queue
+        self.endpoints = endpoints
 
     def run(self):
         self.stop_event.clear()
@@ -87,7 +89,8 @@ class FrameSenderThread(threading.Thread):
     def _broadcast_master_time(self) -> float:
         master_time_ms = self._get_current_time_ms()
         master_time_packet = self.packet_builder.build_master_time_packet(master_time_ms)
-        self.connection.broadcast(master_time_packet)
+        for endpoint in self.endpoints: # type:str
+            self.connection.send_packet(endpoint, master_time_packet)
         return master_time_ms
 
     def _get_current_time_ms(self) -> float:

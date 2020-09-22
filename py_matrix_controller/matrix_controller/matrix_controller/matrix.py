@@ -36,7 +36,8 @@ class Matrix(object):
     def _broadcast_master_time(self) -> float:
         master_time_ms = self._get_current_time_ms()
         master_time_packet = self.packet_builder.build_master_time_packet(master_time_ms)
-        self.udp_connection.broadcast(master_time_packet)
+        for endpoint in self.endpoints: # type:str
+            self.udp_connection.send_packet(endpoint, master_time_packet)
         return master_time_ms
 
     def _get_current_time_ms(self) -> float:
@@ -52,7 +53,7 @@ class Matrix(object):
 
     def start_frame_sequence(self, frame_provider: FrameProvider) -> None:
         print("Matrix.start_frame_sequence() called")
-        self.frame_scheduler = FrameScheduler(frame_provider)
+        self.frame_scheduler = FrameScheduler(frame_provider, self.endpoints)
         self.frame_scheduler.start()
 
     def stop_frame_sequence(self) -> None:
