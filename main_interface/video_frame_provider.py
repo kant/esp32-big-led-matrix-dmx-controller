@@ -48,19 +48,19 @@ class VideoFrameProvider(FrameProvider):
         bottom_left_image = down_scaled_image[14:28, 0:25]
         bottom_right_image = down_scaled_image[14:28, 25:50]
         top_left_panel_sub_frame: dict = {
-            'pixel_data': self._build_sub_panel_pixel_date(top_left_image),
+            'pixel_data': self._build_sub_panel_pixel_data(top_left_image),
             'endpoint': self.endpoints[0]
         }
         top_right_panel_sub_frame: dict = {
-            'pixel_data': self._build_sub_panel_pixel_date(top_right_image),
+            'pixel_data': self._build_sub_panel_pixel_data(top_right_image),
             'endpoint': self.endpoints[1]
         }
         bottom_left_panel_sub_frame: dict = {
-            'pixel_data': self._build_sub_panel_pixel_date(bottom_left_image),
+            'pixel_data': self._build_sub_panel_pixel_data(bottom_left_image),
             'endpoint': self.endpoints[2]
         }
         bottom_right_panel_sub_frame: dict = {
-            'pixel_data': self._build_sub_panel_pixel_date(bottom_right_image),
+            'pixel_data': self._build_sub_panel_pixel_data(bottom_right_image),
             'endpoint': self.endpoints[3]
         }
         frame: list = []
@@ -70,15 +70,40 @@ class VideoFrameProvider(FrameProvider):
         frame.append(bottom_right_panel_sub_frame)
         return frame
 
-    def _build_sub_panel_pixel_date(self, image) -> bytearray:
-        # only dummy implementation!
-        return self._build_pixel_data([255, 0, 0])
 
-    def _build_pixel_data(self, color: list) -> bytearray:
-        pixel_data: bytearray = bytearray()
-        # following bytes represent pixel data; each pixel consists of 3 bytes for RGB
-        for led in range(self.PANEL_LED_COUNT):
-            pixel_data.append(color[0])
-            pixel_data.append(color[1])
-            pixel_data.append(color[2])
-        return pixel_data
+    def _build_sub_panel_pixel_data(self, image) -> bytearray:
+        package = bytearray()
+        height: int = image.shape[0]
+        width: int = image.shape[1]
+        for x in range(0, height, 2):
+            for y in range(0, width, 1):
+                b, g, r = (image[x, y])
+                package.append(r)
+                package.append(g)
+                package.append(b)
+                # pixel__arr = [r, g, b]
+                # binary_format = bytearray(pixel__arr)
+                # p1_bin_file.write(binary_format)
+
+            x = x + 1
+            for y in range(width - 1, -1, -1):
+                b, g, r = (image[x, y])
+                package.append(r)
+                package.append(g)
+                package.append(b)
+                # pixel__arr = [r, g, b]
+                # binary_format = bytearray(pixel__arr)
+                # p1_bin_file.write(binary_format)
+
+        return package
+
+
+
+    # def _build_pixel_data(self, color: list) -> bytearray:
+    #     pixel_data: bytearray = bytearray()
+    #     # following bytes represent pixel data; each pixel consists of 3 bytes for RGB
+    #     for led in range(self.PANEL_LED_COUNT):
+    #         pixel_data.append(color[0])
+    #         pixel_data.append(color[1])
+    #         pixel_data.append(color[2])
+    #     return pixel_data

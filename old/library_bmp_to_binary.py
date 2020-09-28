@@ -290,27 +290,6 @@ def create_frame_with_text(background_color, text, scale, color, thickness, x, y
 
 
 def create_and_show_text_animation(background_color, text, scale, color, thickness, x, y, speed, center):
-    # Setup all that time stuff
-    global x_add
-    print("sending frame sequence to ESPs")
-    opened_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-    opened_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
-    opened_socket.settimeout(5)
-
-    master_time_ms = get_current_time_ms()
-    print("send master time ({0} ms) broadcast".format(master_time_ms))
-    master_time_packet = build_master_time_packet(master_time_ms)
-    opened_socket.sendto(master_time_packet, ("<broadcast>", 50000))
-
-    last_send_time_packet_time = master_time_ms
-
-    last_send_frame_packet_time = master_time_ms
-    frame_packet_has_been_sent = False
-
-    time_offset = 200
-
-    time_to_present_frame = master_time_ms + time_offset
-    print("send first frame presented at time ({0} ms) broadcast".format(time_to_present_frame))
 
     text_size = create_frame_with_text(background_color, text, scale, color, thickness, x, y, center)[1]
 
@@ -361,38 +340,9 @@ def create_and_show_text_animation(background_color, text, scale, color, thickne
         p4 = fill_bytearray_p4(p4, image, time_to_present_frame)
 
 
-        # WAITING FOR PERMISSION TO LIFT OF
-        if frame_packet_has_been_sent:
-            # wait until approx. 40 ms elapsed from last packet has been sent
-            wait_time_ms = 40.0 - (get_current_time_ms() - last_send_frame_packet_time)
-            if wait_time_ms > 0:
-                sleep(wait_time_ms / 1000.0)
 
-        master_time_ms = get_current_time_ms()
 
-        # SEND
-        send_to_esp(opened_socket, p1, p2, p3, p4)
 
-        # Set time values
-        frame_packet_has_been_sent = True
-        time_to_present_frame = last_send_frame_packet_time + time_offset + 40
-        last_send_frame_packet_time = master_time_ms
-
-        if (last_send_frame_packet_time - last_send_time_packet_time) > 2000:
-            # send updated master time every approx. 2000ms
-            last_send_time_packet_time = last_send_frame_packet_time
-            master_time_packet = build_master_time_packet(last_send_time_packet_time)
-            opened_socket.sendto(master_time_packet, ("<broadcast>", 50000))
-
-        # p1_bin_file.close()
-
-        # If the stop key is pressed, stop the thing
-        # if stop:
-        #     break
-
-    print("LUL")
-    time.sleep(1)
-    show_black()
 
 
 def show_black():
@@ -466,7 +416,6 @@ def send_to_esp(opened_socket, package1, package2, package3, package4):
 
 
 def fill_bytearray_p1(package, image, time_to_present_frame):
-    package += struct.pack('<Q', round(time_to_present_frame))
     # LED Values
     for x in range(0, 14, 2):
         for y in range(0, 25, 1):

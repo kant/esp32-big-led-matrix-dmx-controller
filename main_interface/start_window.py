@@ -24,7 +24,6 @@ class MainWindow(QMainWindow):
     video_frame_provider: VideoFrameProvider = None
 
     def __init__(self) -> None:
-        self.matrix.configure(self.ENDPOINTS)
         QMainWindow.__init__(self)
         self.python_file_path = os.path.dirname(os.path.abspath(__file__))
         self._init_window_design()
@@ -53,42 +52,24 @@ class MainWindow(QMainWindow):
 
     def _init_window_design(self) -> None:
         uic.loadUi(os.path.join(self.python_file_path, "main_window.ui"), self)
-
+        self.btn_configure.clicked.connect(self.on_btn_configure_click)
         self.btn_clear.clicked.connect(self.on_btn_clear_click)
-
-        # main effects
-        self.btn_start_running_text.clicked.connect(self.on_btn_start_running_text_click)
-        self.btn_stop_running_text.clicked.connect(self.on_btn_stop_running_text_click)
+        self.btn_fill.clicked.connect(self.on_btn_fill_click)
+        self.btn_start_color_fading.clicked.connect(self.on_btn_start_color_fading_click)
+        self.btn_stop_color_fading.clicked.connect(self.on_btn_stop_color_fading_click)
         self.btn_start_video.clicked.connect(self.on_btn_start_video_click)
         self.btn_stop_video.clicked.connect(self.on_btn_stop_video_click)
-        self.btn_start_picture.clicked.connect(self.on_btn_start_picture_click)
-        self.btn_stop_picture.clicked.connect(self.on_btn_stop_picture_click)
-
-        # functions for running effects
+        self.btn_get_network_settings.clicked.connect(self.on_btn_get_network_settings_click)
+        self.btn_set_network_settings.clicked.connect(self.on_btn_set_network_settings_click)
         self.btn_back_color.clicked.connect(self.background_color_picker)
         self.btn_color.clicked.connect(self.text_color_picker)
-        self.btn_choose_file_1.clicked.connect(self.on_btn_choose_file_1_click)
-        self.btn_choose_file_2.clicked.connect(self.on_btn_choose_file_2_click)
 
-        # additional effects
-        self.btn_start_rainbow.clicked.connect(self.on_btn_start_rainbow_click)
-        self.btn_stop_rainbow.clicked.connect(self.on_btn_stop_rainbow_click)
-        self.btn_start_simple_color.clicked.connect(self.on_btn_start_simple_color_click)
-        self.btn_stop_simple_color.clicked.connect(self.on_btn_stop_simple_color_click)
-        self.btn_start_fading_pixels.clicked.connect(self.on_btn_start_fading_pixels_click)
-        self.btn_stop_fading_pixels.clicked.connect(self.on_btn_stop_fading_pixels_click)
-        self.btn_start_audio_meter.clicked.connect(self.on_btn_start_audio_meter_click)
-        self.btn_stop_audio_meter.clicked.connect(self.on_btn_stop_audio_meter_click)
-
-        # functions for additional effects
-        self.btn_simple_color_color.clicked.connect(self.on_btn_simple_color_color_click)
+        self.edt_subnet_mask.text()
 
 
-
-
-
-
-
+    @pyqtSlot()
+    def on_btn_configure_click(self):
+        self.matrix.configure(self.ENDPOINTS)
 
     @pyqtSlot()
     def on_btn_clear_click(self):
@@ -98,47 +79,10 @@ class MainWindow(QMainWindow):
     def on_btn_fill_click(self):
         color = QColorDialog.getColor()
         if color.isValid():
+            try:
                 self.matrix.fill([color.red(), color.green(), color.blue()])
-
-
-
-    @pyqtSlot()
-    def on_btn_start_running_text_click(self):
-        self.matrix.start_frame_sequence(self.run_text_provider)
-        print(self.scale)
-
-    @pyqtSlot()
-    def on_btn_stop_running_text_click(self):
-        self.matrix.stop_frame_sequence()  # Kann ich hier auf einen Befehl iwie ausführen
-
-    @pyqtSlot()
-    def on_btn_start_video_click(self):
-        self.matrix.start_frame_sequence(self.video_frame_provider)
-
-    @pyqtSlot()
-    def on_btn_stop_video_click(self):
-        self.matrix.stop_frame_sequence()
-
-    @pyqtSlot()
-    def on_btn_start_picture_click(self):
-        self.matrix.start_frame_sequence(self.video_frame_provider)
-
-    @pyqtSlot()
-    def on_btn_stop_picture_click(self):
-        self.matrix.stop_frame_sequence()
-
-    @pyqtSlot()
-    def on_btn_choose_file_1_click(self):
-        pass
-
-    @pyqtSlot()
-    def on_btn_choose_file_2_click(self):
-        pass
-
-    def on_btn_simple_color_color_click(self):
-        pass
-
-
+            except:
+                print("exception")
 
     @pyqtSlot()
     def background_color_picker(self):
@@ -158,6 +102,70 @@ class MainWindow(QMainWindow):
             self.COLOR = color_list
             print("Text Color = " + str(self.COLOR))
 
+    @pyqtSlot()
+    def on_btn_start_color_fading_click(self):
+        self.matrix.start_frame_sequence(self.run_text_provider)
+        print(self.scale)
+
+    @pyqtSlot()
+    def on_btn_stop_color_fading_click(self):
+        self.matrix.stop_frame_sequence()  # Kann ich hier auf einen Befehl iwie ausführen
+
+    @pyqtSlot()
+    def on_btn_start_video_click(self):
+        self.matrix.start_frame_sequence(self.video_frame_provider)
+
+    @pyqtSlot()
+    def on_btn_stop_video_click(self):
+        self.matrix.stop_frame_sequence()
+
+    @pyqtSlot()
+    def on_btn_get_network_settings_click(self):
+        ip_address: str = self.edt_ip_address.text()
+        received_network_settings: dict = {}
+
+        success: bool = self.matrix.get_network_settings(ip_address, received_network_settings)
+
+        if not success:
+            self._show_error_dialog("Error", "Getting network settings failed")
+        else:
+            use_dhcp: bool = received_network_settings['use_dhcp']
+            self.chb_use_dhcp.setChecked(use_dhcp)
+            mac_address: str = received_network_settings['mac_address']
+            self.edt_mac_address.setText(mac_address)
+            static_ip_address: str = received_network_settings['ip_address']
+            self.edt_static_ip_address.setText(static_ip_address)
+            subnet_mask: str = received_network_settings['subnet_mask']
+            self.edt_subnet_mask.setText(subnet_mask)
+            gateway: str = received_network_settings['gateway']
+            self.edt_gateway.setText(gateway)
+            dns_server: str = received_network_settings['dns_server']
+            self.edt_dns_server.setText(dns_server)
+            self._show_message_dialog("Information", "Received network settings")
+
+    @pyqtSlot()
+    def on_btn_set_network_settings_click(self):
+        ip_address: str = self.edt_ip_address.text()
+
+        new_network_settings: dict = {}
+        use_dhcp: bool = self.chb_use_dhcp.isChecked()
+        new_network_settings['use_dhcp'] = use_dhcp
+        static_ip_address: str = self.edt_static_ip_address.text()
+        new_network_settings['ip_address'] = static_ip_address
+        subnet_mask: str = self.edt_subnet_mask.text()
+        new_network_settings['subnet_mask'] = subnet_mask
+        gateway: str = self.edt_gateway.text()
+        new_network_settings['gateway'] = gateway
+        dns_server: str = self.edt_dns_server.text()
+        new_network_settings['dns_server'] = dns_server
+
+        success: bool = self.matrix.set_network_settings(ip_address, new_network_settings)
+        if not success:
+            self._show_error_dialog("Error", "Setting network settings failed")
+        else:
+            self._show_message_dialog("Information", "Sent network settings, waiting 10 seconds for restart.")
+            sleep(10)
+
     def _show_error_dialog(self, title: str, message: str):
         msg: QMessageBox = QMessageBox()
         msg.setIcon(QMessageBox.Critical)
@@ -171,6 +179,4 @@ class MainWindow(QMainWindow):
         msg.setText(message)
         msg.setWindowTitle(title)
         msg.exec_()
-
-
 
