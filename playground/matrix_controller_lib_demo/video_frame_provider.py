@@ -27,7 +27,7 @@ class VideoFrameProvider(FrameProvider):
         if not success:
             print("### opencv video capture read failed")
             return []
-        return self.image_frame_builder.build_frame(image, self.endpoints)
+        return self.image_frame_builder.build_frame(image)
 
     def provide_next(self, previous_frame: list) -> list:
         success, image = self.video_capture.read()
@@ -39,7 +39,7 @@ class VideoFrameProvider(FrameProvider):
             if not success:
                 print("### opencv video capture read after reopening failed")
                 return []
-        return self.image_frame_builder.build_frame(image, self.endpoints)
+        return self.image_frame_builder.build_frame(image)
 
     def complete(self) -> None:
         self.video_capture.release()

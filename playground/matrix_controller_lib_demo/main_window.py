@@ -78,7 +78,7 @@ class MainWindow(QMainWindow):
             if img_filename != "":
                 img = cv2.imread(img_filename, cv2.IMREAD_COLOR)
                 if img is not None:
-                    img_frame: list = self.image_frame_builder.build_frame(img, self.ENDPOINTS)
+                    img_frame: list = self.image_frame_builder.build_frame(img)
                     self.matrix.show_image_frame(img_frame)
 
     @pyqtSlot()
