@@ -36,15 +36,26 @@ class Matrix(object):
     def _broadcast_master_time(self) -> float:
         master_time_ms = self._get_current_time_ms()
         master_time_packet = self.packet_builder.build_master_time_packet(master_time_ms)
-        self.udp_connection.broadcast(master_time_packet)
+        for endpoint in self.endpoints:     # type: dict
+            self.udp_connection.send_packet(endpoint, master_time_packet)
         return master_time_ms
 
     def _get_current_time_ms(self) -> float:
         return time.time() * 1000
 
     def _send_frame_packet(self, frame_packet: bytearray) -> None:
-        for endpoint in self.endpoints: # type:str
+        for endpoint in self.endpoints:     # type: dict
             self.udp_connection.send_packet(endpoint, frame_packet)
+
+    def show_image_frame(self, img_frame: list) -> None:
+        print("Matrix.show_image_frame() called with img_frame = {0}".format(img_frame))
+        if len(self.endpoints) > 0:
+            self.udp_connection.open()
+            master_time_ms: float = self._broadcast_master_time()
+            time_to_present_frame: float = master_time_ms + self.MASTER_TIME_OFFSET
+            packets_to_transmit: list = self.packet_builder.build_frame_packets(time_to_present_frame,img_frame)
+            self.udp_connection.send_packets(packets_to_transmit)
+            self.udp_connection.close()
 
     def clear(self) -> None:
         print("Matrix.clear() called")
@@ -52,7 +63,7 @@ class Matrix(object):
 
     def start_frame_sequence(self, frame_provider: FrameProvider) -> None:
         print("Matrix.start_frame_sequence() called")
-        self.frame_scheduler = FrameScheduler(frame_provider)
+        self.frame_scheduler = FrameScheduler(frame_provider, self.endpoints)
         self.frame_scheduler.start()
 
     def stop_frame_sequence(self) -> None:

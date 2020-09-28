@@ -19,10 +19,12 @@ class FrameSenderThread(threading.Thread):
 
     stop_event: threading.Event = threading.Event()     # event to signal the thread that it should stop
     frame_queue: FrameQueue = None                      # queue to hold frames
+    endpoints: list                                     # list of endpoints
 
-    def __init__(self, frame_queue: FrameQueue):
+    def __init__(self, frame_queue: FrameQueue, endpoints: list):
         threading.Thread.__init__(self)
         self.frame_queue = frame_queue
+        self.endpoints = endpoints
 
     def run(self):
         self.stop_event.clear()
@@ -38,15 +40,7 @@ class FrameSenderThread(threading.Thread):
             if len(frame) > 0:
                 # prepare packets for transmission
                 time_to_present_frame: float = next_transmission_time_ms + self.MASTER_TIME_OFFSET
-                packets_to_transmit: list = []
-                for panel_sub_frame in frame:
-                    pixel_data: bytearray = panel_sub_frame['pixel_data']
-                    endpoint: str = panel_sub_frame['endpoint']
-                    packet_to_transmit: dict = {
-                        'endpoint': endpoint,
-                        'packet_data': self.packet_builder.build_frame_packet(time_to_present_frame, pixel_data)
-                    }
-                    packets_to_transmit.append(packet_to_transmit)
+                packets_to_transmit: list = self.packet_builder.build_frame_packets(time_to_present_frame, frame)
 
                 # calculate wait time
                 wait_time_ms: float = (next_transmission_time_ms - self._get_current_time_ms())
@@ -67,8 +61,7 @@ class FrameSenderThread(threading.Thread):
                         print("### adjusted schedule by 2 frames")
 
                 # transmit
-                for packet in packets_to_transmit:
-                    self.connection.send_packet(packet['endpoint'], packet['packet_data'])
+                self.connection.send_packets(packets_to_transmit)
 
                 # schedule next transmission
                 next_transmission_time_ms += self.FRAME_DISTANCE
@@ -87,7 +80,8 @@ class FrameSenderThread(threading.Thread):
     def _broadcast_master_time(self) -> float:
         master_time_ms = self._get_current_time_ms()
         master_time_packet = self.packet_builder.build_master_time_packet(master_time_ms)
-        self.connection.broadcast(master_time_packet)
+        for endpoint in self.endpoints:     # type: dict
+            self.connection.send_packet(endpoint, master_time_packet)
         return master_time_ms
 
     def _get_current_time_ms(self) -> float:

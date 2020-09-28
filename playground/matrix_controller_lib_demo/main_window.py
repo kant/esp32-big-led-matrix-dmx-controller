@@ -3,21 +3,33 @@ import os
 from time import sleep
 
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QMainWindow, QColorDialog, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QColorDialog, QMessageBox, QFileDialog
 from PyQt5 import uic
 
+import cv2
+
 from matrix_controller import Matrix
+from image_frame_builder import ImageFrameBuilder
 from fading_color_frame_provider import FadingColorFrameProvider
 from video_frame_provider import VideoFrameProvider
 
 
 class MainWindow(QMainWindow):
 
-    ENDPOINTS: list = ["192.168.2.158", "192.168.2.159", "192.168.2.161", "192.168.2.157"]
+    ENDPOINTS: list = [
+        {'ip_address': "192.168.2.158",
+         'port': 50000},
+        {'ip_address': "192.168.2.159",
+         'port': 50000},
+        {'ip_address': "192.168.2.161",
+         'port': 50000},
+        {'ip_address': "192.168.2.157",
+         'port': 50000}]
     VIDEO_FILENAME: str = "Homer.mp4"
 
     python_file_path: str = ""
     matrix: Matrix = Matrix()
+    image_frame_builder: ImageFrameBuilder = None
     fading_color_frame_provider: FadingColorFrameProvider = None
     video_frame_provider: VideoFrameProvider = None
 
@@ -25,6 +37,7 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
         self.python_file_path = os.path.dirname(os.path.abspath(__file__))
         self._init_window_design()
+        self.image_frame_builder = ImageFrameBuilder(self.ENDPOINTS)
         self.fading_color_frame_provider = FadingColorFrameProvider(self.ENDPOINTS)
         self.video_frame_provider = VideoFrameProvider(self.ENDPOINTS, self.VIDEO_FILENAME)
         self.show()
@@ -34,6 +47,7 @@ class MainWindow(QMainWindow):
         self.btn_configure.clicked.connect(self.on_btn_configure_click)
         self.btn_clear.clicked.connect(self.on_btn_clear_click)
         self.btn_fill.clicked.connect(self.on_btn_fill_click)
+        self.btn_show_image.clicked.connect(self.on_btn_show_image_click)
         self.btn_start_color_fading.clicked.connect(self.on_btn_start_color_fading_click)
         self.btn_stop_color_fading.clicked.connect(self.on_btn_stop_color_fading_click)
         self.btn_start_video.clicked.connect(self.on_btn_start_video_click)
@@ -54,6 +68,18 @@ class MainWindow(QMainWindow):
         color = QColorDialog.getColor()
         if color.isValid():
             self.matrix.fill([color.red(), color.green(), color.blue()])
+
+    @pyqtSlot()
+    def on_btn_show_image_click(self):
+        img_filename_and_filter = QFileDialog.getOpenFileName(caption="Select image file",
+                                                              filter="Image files (*.jpg *.gif *.bmp *.png)")
+        if img_filename_and_filter is not None:
+            img_filename = img_filename_and_filter[0]
+            if img_filename != "":
+                img = cv2.imread(img_filename, cv2.IMREAD_COLOR)
+                if img is not None:
+                    img_frame: list = self.image_frame_builder.build_frame(img)
+                    self.matrix.show_image_frame(img_frame)
 
     @pyqtSlot()
     def on_btn_start_color_fading_click(self):
