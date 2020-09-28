@@ -2,8 +2,9 @@ import typing
 import os
 from time import sleep
 
+import cv2
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QMainWindow, QColorDialog, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QColorDialog, QMessageBox, QFileDialog
 from PyQt5 import uic
 
 
@@ -16,7 +17,15 @@ from run_text_provider import RunTextProvider
 class MainWindow(QMainWindow):
     LAYOUT = 1
     VIDEO_FILENAME: str = "Homer.mp4"
-    ENDPOINTS: list = ["192.168.2.158", "192.168.2.159", "192.168.2.161", "192.168.2.157"]
+    ENDPOINTS: list = [
+        {'ip_address': "192.168.2.158",
+         'port': 50000},
+        {'ip_address': "192.168.2.159",
+         'port': 50000},
+        {'ip_address': "192.168.2.161",
+         'port': 50000},
+        {'ip_address': "192.168.2.157",
+         'port': 50000}]
 
     python_file_path: str = ""
     matrix: Matrix = Matrix()
@@ -121,11 +130,19 @@ class MainWindow(QMainWindow):
 
     @pyqtSlot()
     def on_btn_start_picture_click(self):
-        self.matrix.start_frame_sequence(self.video_frame_provider)
+        img_filename_and_filter = QFileDialog.getOpenFileName(caption="Select image file",
+                                                              filter="Image files (*.jpg *.gif *.bmp *.png)")
+        if img_filename_and_filter is not None:
+            img_filename = img_filename_and_filter[0]
+            if img_filename != "":
+                img = cv2.imread(img_filename, cv2.IMREAD_COLOR)
+                if img is not None:
+                    img_frame: list = self.image_frame_builder.build_frame(img)
+                    self.matrix.show_image_frame(img_frame)
 
     @pyqtSlot()
     def on_btn_stop_picture_click(self):
-        self.matrix.stop_frame_sequence()
+        pass
 
     @pyqtSlot()
     def on_btn_choose_file_1_click(self):
