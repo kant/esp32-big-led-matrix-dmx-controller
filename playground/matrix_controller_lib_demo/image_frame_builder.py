@@ -41,7 +41,7 @@ class ImageFrameBuilder(object):
 
     def _build_sub_panel_pixel_date(self, image: object) -> bytearray:
         # only dummy implementation!
-        return self._build_pixel_data([0, 255, 0])
+        return self._build_pixel_data([255, 0, 0])
 
     def _build_pixel_data(self, color: list) -> bytearray:
         pixel_data: bytearray = bytearray()
