@@ -12,7 +12,12 @@ class UdpConnection(object):
         self.udp_socket.settimeout(5)
 
     def broadcast(self, packet: bytearray) -> None:
-        self.udp_socket.sendto(packet, ("<broadcast>", self.UDP_PORT))
+        self.udp_socket.sendto(packet, ("192.168.2.158", self.UDP_PORT))
+        self.udp_socket.sendto(packet, ("192.168.2.159", self.UDP_PORT))
+        self.udp_socket.sendto(packet, ("192.168.2.161", self.UDP_PORT))
+        self.udp_socket.sendto(packet, ("192.168.2.157", self.UDP_PORT))
+
+        # self.udp_socket.sendto(packet, ("<broadcast>", self.UDP_PORT))
 
     def send_packet(self, endpoint: str, packet: bytearray) -> None:
         self.udp_socket.sendto(packet, (endpoint, self.UDP_PORT))
