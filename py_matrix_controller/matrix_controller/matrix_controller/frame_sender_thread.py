@@ -89,7 +89,7 @@ class FrameSenderThread(threading.Thread):
     def _broadcast_master_time(self) -> float:
         master_time_ms = self._get_current_time_ms()
         master_time_packet = self.packet_builder.build_master_time_packet(master_time_ms)
-        for endpoint in self.endpoints: # type:str
+        for endpoint in self.endpoints:     # type: dict
             self.connection.send_packet(endpoint, master_time_packet)
         return master_time_ms
 

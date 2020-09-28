@@ -1,8 +1,7 @@
 import socket
 
-class UdpConnection(object):
 
-    UDP_PORT: int = 50000
+class UdpConnection(object):
 
     udp_socket: socket.socket = None
 
@@ -11,8 +10,8 @@ class UdpConnection(object):
         self.udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
         self.udp_socket.settimeout(5)
 
-    def send_packet(self, endpoint: str, packet: bytearray) -> None:
-        self.udp_socket.sendto(packet, (endpoint, self.UDP_PORT))
+    def send_packet(self, endpoint: dict, packet: bytearray) -> None:
+        self.udp_socket.sendto(packet, (endpoint['ip_address'], endpoint['port']))
 
     def close(self) -> None:
         self.udp_socket.close()

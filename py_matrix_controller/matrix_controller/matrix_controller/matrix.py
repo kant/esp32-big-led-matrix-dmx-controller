@@ -36,7 +36,7 @@ class Matrix(object):
     def _broadcast_master_time(self) -> float:
         master_time_ms = self._get_current_time_ms()
         master_time_packet = self.packet_builder.build_master_time_packet(master_time_ms)
-        for endpoint in self.endpoints: # type:str
+        for endpoint in self.endpoints:     # type: dict
             self.udp_connection.send_packet(endpoint, master_time_packet)
         return master_time_ms
 
@@ -44,7 +44,7 @@ class Matrix(object):
         return time.time() * 1000
 
     def _send_frame_packet(self, frame_packet: bytearray) -> None:
-        for endpoint in self.endpoints: # type:str
+        for endpoint in self.endpoints:     # type: dict
             self.udp_connection.send_packet(endpoint, frame_packet)
 
     def clear(self) -> None:
