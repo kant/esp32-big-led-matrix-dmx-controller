@@ -27,7 +27,7 @@
      <string>Clear</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_start_color_fading">
+   <widget class="QPushButton" name="btn_start_running_text">
     <property name="geometry">
      <rect>
       <x>500</x>
@@ -40,7 +40,7 @@
      <string>Start</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_stop_color_fading">
+   <widget class="QPushButton" name="btn_stop_running_text">
     <property name="geometry">
      <rect>
       <x>580</x>
@@ -247,7 +247,7 @@
      <string>Speed</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="btn_choose_file_1">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -286,7 +286,7 @@
      <string>Rainbow </string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_stop_video_2">
+   <widget class="QPushButton" name="btn_stop_rainbow">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -299,7 +299,7 @@
      <string>Stop</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_start_video_2">
+   <widget class="QPushButton" name="btn_start_rainbow">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -338,7 +338,7 @@
      <string>Simple Color</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_start_video_3">
+   <widget class="QPushButton" name="btn_start_simple_color">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -351,7 +351,7 @@
      <string>Start</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_stop_video_3">
+   <widget class="QPushButton" name="btn_stop_simple_color">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -377,7 +377,7 @@
      <string>Fading Pixels</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_start_video_4">
+   <widget class="QPushButton" name="btn_start_fading_pixels">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -390,7 +390,7 @@
      <string>Start</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_stop_video_4">
+   <widget class="QPushButton" name="btn_stop_fading_pixels">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -416,7 +416,7 @@
      <string>Audio Meter</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_start_video_5">
+   <widget class="QPushButton" name="btn_start_audio_meter">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -429,7 +429,7 @@
      <string>Start</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_stop_video_5">
+   <widget class="QPushButton" name="btn_stop_audio_meter">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -442,7 +442,7 @@
      <string>Stop</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="btn_choose_file_2">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -481,7 +481,7 @@
      <string>Picture</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_stop_video_6">
+   <widget class="QPushButton" name="btn_stop_picture">
     <property name="geometry">
      <rect>
       <x>580</x>
@@ -494,7 +494,7 @@
      <string>Stop</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_start_video_6">
+   <widget class="QPushButton" name="btn_start_picture">
     <property name="geometry">
      <rect>
       <x>500</x>
