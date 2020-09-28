@@ -57,7 +57,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>280</y>
+      <y>310</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -70,7 +70,7 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>280</y>
+      <y>310</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -83,7 +83,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>280</y>
+      <y>310</y>
       <width>141</width>
       <height>16</height>
      </rect>
@@ -96,7 +96,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>330</y>
+      <y>360</y>
       <width>141</width>
       <height>16</height>
      </rect>
@@ -109,7 +109,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>330</y>
+      <y>360</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -122,7 +122,7 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>330</y>
+      <y>360</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -341,6 +341,19 @@
      <string>Set network settings &amp;&amp; restart</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="btn_show_image">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>250</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Show image</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -348,7 +361,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

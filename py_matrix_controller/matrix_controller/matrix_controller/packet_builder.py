@@ -32,3 +32,15 @@ class PacketBuilder(object):
         # following bytes represent pixel data; each pixel consists of 3 bytes for RGB
         frame_packet += pixel_data
         return frame_packet
+
+    def build_frame_packets(self, time_to_present_frame: float, frame: list) -> list:
+        packets_to_transmit: list = []
+        for panel_sub_frame in frame:
+            pixel_data: bytearray = panel_sub_frame['pixel_data']
+            endpoint: str = panel_sub_frame['endpoint']
+            packet_to_transmit: dict = {
+                'endpoint': endpoint,
+                'packet_data': self.build_frame_packet(time_to_present_frame, pixel_data)
+            }
+            packets_to_transmit.append(packet_to_transmit)
+        return packets_to_transmit

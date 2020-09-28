@@ -47,6 +47,16 @@ class Matrix(object):
         for endpoint in self.endpoints:     # type: dict
             self.udp_connection.send_packet(endpoint, frame_packet)
 
+    def show_image_frame(self, img_frame: list) -> None:
+        print("Matrix.show_image_frame() called with img_frame = {0}".format(img_frame))
+        if len(self.endpoints) > 0:
+            self.udp_connection.open()
+            master_time_ms: float = self._broadcast_master_time()
+            time_to_present_frame: float = master_time_ms + self.MASTER_TIME_OFFSET
+            packets_to_transmit: list = self.packet_builder.build_frame_packets(time_to_present_frame,img_frame)
+            self.udp_connection.send_packets(packets_to_transmit)
+            self.udp_connection.close()
+
     def clear(self) -> None:
         print("Matrix.clear() called")
         self.fill(self.BLACK_COLOR)

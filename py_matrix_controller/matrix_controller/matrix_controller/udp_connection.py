@@ -13,6 +13,10 @@ class UdpConnection(object):
     def send_packet(self, endpoint: dict, packet: bytearray) -> None:
         self.udp_socket.sendto(packet, (endpoint['ip_address'], endpoint['port']))
 
+    def send_packets(self, packets: list) -> None:
+        for packet in packets:
+            self.send_packet(packet['endpoint'], packet['packet_data'])
+
     def close(self) -> None:
         self.udp_socket.close()
         self.udp_socket = None
