@@ -13,7 +13,15 @@ from video_frame_provider import VideoFrameProvider
 
 class MainWindow(QMainWindow):
 
-    ENDPOINTS: list = ["192.168.2.158", "192.168.2.159", "192.168.2.161", "192.168.2.157"]
+    ENDPOINTS: list = [
+        {'ip_address': "192.168.2.158",
+         'port': 50000},
+        {'ip_address': "192.168.2.159",
+         'port': 50000},
+        {'ip_address': "192.168.2.161",
+         'port': 50000},
+        {'ip_address': "192.168.2.157",
+         'port': 50000}]
     VIDEO_FILENAME: str = "Homer.mp4"
 
     python_file_path: str = ""
