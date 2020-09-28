@@ -53,22 +53,8 @@ class Matrix(object):
             self.udp_connection.open()
             master_time_ms: float = self._broadcast_master_time()
             time_to_present_frame: float = master_time_ms + self.MASTER_TIME_OFFSET
-
-# TODO: bis auf img_frame ist dieser Code identisch mit dem Code in frame_sender_thread.py; Code-Duplizierung aufheben!
-            packets_to_transmit: list = []
-            for panel_sub_frame in img_frame:
-                pixel_data: bytearray = panel_sub_frame['pixel_data']
-                endpoint: str = panel_sub_frame['endpoint']
-                packet_to_transmit: dict = {
-                    'endpoint': endpoint,
-                    'packet_data': self.packet_builder.build_frame_packet(time_to_present_frame, pixel_data)
-                }
-                packets_to_transmit.append(packet_to_transmit)
-
-# TODO: dieser Code ist identisch mit dem Code in frame_sender_thread.py; Code-Duplizierung aufheben!
-            for packet in packets_to_transmit:
-                self.udp_connection.send_packet(packet['endpoint'], packet['packet_data'])
-
+            packets_to_transmit: list = self.packet_builder.build_frame_packets(time_to_present_frame,img_frame)
+            self.udp_connection.send_packets(packets_to_transmit)
             self.udp_connection.close()
 
     def clear(self) -> None:
