@@ -57,7 +57,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>310</y>
+      <y>340</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -70,7 +70,7 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>310</y>
+      <y>340</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -83,7 +83,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>310</y>
+      <y>340</y>
       <width>141</width>
       <height>16</height>
      </rect>
@@ -96,7 +96,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>360</y>
+      <y>390</y>
       <width>141</width>
       <height>16</height>
      </rect>
@@ -109,7 +109,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>360</y>
+      <y>390</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -122,7 +122,7 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>360</y>
+      <y>390</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -352,6 +352,19 @@
     </property>
     <property name="text">
      <string>Show image</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_show_image_with_cartoon_effect">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>280</y>
+      <width>181</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Show image with cartoon effect</string>
     </property>
    </widget>
   </widget>

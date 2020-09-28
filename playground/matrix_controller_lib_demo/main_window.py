@@ -48,6 +48,7 @@ class MainWindow(QMainWindow):
         self.btn_clear.clicked.connect(self.on_btn_clear_click)
         self.btn_fill.clicked.connect(self.on_btn_fill_click)
         self.btn_show_image.clicked.connect(self.on_btn_show_image_click)
+        self.btn_show_image_with_cartoon_effect.clicked.connect(self.on_btn_show_image_with_cartoon_effect_click)
         self.btn_start_color_fading.clicked.connect(self.on_btn_start_color_fading_click)
         self.btn_stop_color_fading.clicked.connect(self.on_btn_stop_color_fading_click)
         self.btn_start_video.clicked.connect(self.on_btn_start_video_click)
@@ -80,6 +81,27 @@ class MainWindow(QMainWindow):
                 if img is not None:
                     img_frame: list = self.image_frame_builder.build_frame(img)
                     self.matrix.show_image_frame(img_frame)
+
+    @pyqtSlot()
+    def on_btn_show_image_with_cartoon_effect_click(self):
+        img_filename_and_filter = QFileDialog.getOpenFileName(caption="Select image file",
+                                                              filter="Image files (*.jpg *.gif *.bmp *.png)")
+        if img_filename_and_filter is not None:
+            img_filename = img_filename_and_filter[0]
+            if img_filename != "":
+                img = cv2.imread(img_filename, cv2.IMREAD_COLOR)
+                if img is not None:
+                    img = self._make_cartoon_image(img)
+                    img_frame: list = self.image_frame_builder.build_frame(img)
+                    self.matrix.show_image_frame(img_frame)
+
+    def _make_cartoon_image(self, img):
+        gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        blurred_img = cv2.medianBlur(gray_img, 5)
+        edges_img = cv2.adaptiveThreshold(blurred_img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 5)
+        homogen_colors2_img = cv2.bilateralFilter(img, 9, 300, 300)
+        cartoon_img = cv2.bitwise_and(homogen_colors2_img, homogen_colors2_img, mask=edges_img)
+        return cartoon_img
 
     @pyqtSlot()
     def on_btn_start_color_fading_click(self):
